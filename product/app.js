@@ -81,12 +81,12 @@
 
     function renderAuth(){
       const user = getUser();
-      if (!user){
-        loginArea.innerHTML = `
-          <a class="btn btn-primary btn-sm btn-login" id="loginBtn" href="login.html?redirect=${encodeURIComponent(location.pathname.split('/').pop() || 'index.html')}">登录 / 注册</a>
-        `;
-        return;
-      }
+        if (!user) {
+            loginArea.innerHTML = `
+    <a class="login-text-link" id="loginBtn" href="login.html?redirect=${encodeURIComponent(location.pathname.split('/').pop() || 'index.html')}">登录 / 注册</a>
+  `;
+            return;
+        }
       const initial = (user.nickname || 'U').slice(-2, -1) || 'U';
       loginArea.innerHTML = `
         <div class="user-menu" id="userMenu">

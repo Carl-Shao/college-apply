@@ -351,7 +351,8 @@ button {
     padding: 20px 24px 40px;
     overflow-y: auto;
     transform: translateX(100%);
-    transition: transform .3s
+    transition: transform .3s;
+    display: none
 }
 
 .mobile-menu.open {
@@ -1191,3 +1192,36 @@ button {
 }
 .btn-primary{animation:btn-breathe 3.5s ease-in-out infinite}
 .btn-primary:hover{animation:none}
+
+/* 登录 / 注册 文字链接（次要入口） */
+.login-text-link{
+  font-size:15px;
+  font-weight:500;
+  color:var(--purple-2);
+  padding:8px 4px;
+  transition:color .2s,opacity .2s;
+  white-space:nowrap;
+}
+.login-text-link:hover{
+  color:#fff;
+  opacity:1;
+}
+/* 页面滚动后 header 变白底，链接换成深紫，保证对比度 */
+.site-header.scrolled .login-text-link{
+  color:var(--purple);
+}
+.site-header.scrolled .login-text-link:hover{
+  color:var(--purple-2);
+}
+
+/* ============ 页面进入过渡 ============ */
+body{
+  animation: pageEnter .4s cubic-bezier(.23,1,.32,1) both;
+}
+@keyframes pageEnter{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:none}
+}
+@media (prefers-reduced-motion: reduce){
+  body{animation:none}
+}

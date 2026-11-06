@@ -1,295 +1,253 @@
 <!doctype html>
 <html lang="zh-CN">
-
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>登录 / 注册 · 智途</title>
-  <link rel="stylesheet" href="styles.css">
-  <style>
-    .login-wrap {
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 120px 24px 60px;
-      background: radial-gradient(120% 90% at 50% 0%, #2A1E6B 0%, #0E0B1A 70%)
-    }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>登录 / 注册 · 智途</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  /* 锁死页面，不允许滚动 */
+  html,body{height:100%;overflow:hidden;margin:0}
 
-    .login-card {
-      width: min(420px, 100%);
-      background: #fff;
-      border-radius: 20px;
-      padding: 36px 32px;
-      box-shadow: 0 24px 60px rgba(20, 10, 60, .28)
-    }
+  /* 全屏视频背景 */
+  .login-bg{
+    position:fixed;inset:0;z-index:0;overflow:hidden;
+    background:radial-gradient(120% 90% at 50% 0%,#2A1E6B 0%,#0E0B1A 70%);
+  }
+  .login-bg video{
+    width:100%;height:100%;object-fit:cover;
+  }
+  /* 暗色叠加，保证文字对比度 */
+  .login-bg::after{
+    content:"";position:absolute;inset:0;
+    background:radial-gradient(139% 111% at 50.8% 0%,rgba(0,0,0,0) 0%,rgba(0,0,0,.72) 99%);
+    pointer-events:none;
+  }
 
-    .login-card h1 {
-      font-size: 26px;
-      color: var(--ink);
-      letter-spacing: -.02em;
-      margin-bottom: 6px
-    }
+  /* 居中容器 */
+  .login-wrap{
+    position:relative;z-index:1;
+    height:100dvh;width:100%;
+    display:grid;place-items:center;
+    padding:24px;
+  }
 
-    .login-card .sub {
-      color: var(--muted);
-      font-size: 14px;
-      margin-bottom: 24px
-    }
+  /* 雾化玻璃卡片 */
+  .login-card{
+    width:min(420px,100%);
+    padding:36px 32px;
+    border-radius:24px;
+    color:#fff;
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.18);
+    box-shadow:0 24px 60px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.12);
+    backdrop-filter:blur(24px) saturate(140%);
+    -webkit-backdrop-filter:blur(24px) saturate(140%);
+    animation:cardIn .5s cubic-bezier(.23,1,.32,1) both;
+  }
+  @keyframes cardIn{
+    from{opacity:0;transform:translateY(16px) scale(.98)}
+    to{opacity:1;transform:none}
+  }
 
-    .login-tabs {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 24px;
-      background: var(--paper);
-      padding: 5px;
-      border-radius: 12px
-    }
+  .login-card h1{font-size:26px;letter-spacing:-.02em;margin-bottom:6px;color:#fff}
+  .login-card .sub{color:rgba(255,255,255,.72);font-size:14px;margin-bottom:24px}
 
-    .login-tab {
-      flex: 1;
-      padding: 10px;
-      border-radius: 9px;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--muted);
-      transition: all .2s
-    }
+  /* 登录/注册切换 */
+  .login-tabs{
+    display:flex;gap:6px;margin-bottom:24px;
+    background:rgba(255,255,255,.08);
+    padding:5px;border-radius:12px;
+    border:1px solid rgba(255,255,255,.1);
+  }
+  .login-tab{
+    flex:1;padding:10px;border-radius:9px;
+    font-size:14px;font-weight:600;
+    color:rgba(255,255,255,.65);
+    transition:all .2s;
+  }
+  .login-tab.active{
+    background:rgba(255,255,255,.92);
+    color:var(--purple);
+    box-shadow:0 2px 8px rgba(0,0,0,.15);
+  }
 
-    .login-tab.active {
-      background: #fff;
-      color: var(--purple);
-      box-shadow: 0 2px 8px rgba(20, 10, 60, .08)
-    }
+  /* 表单 */
+  .lfield{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+  .lfield label{font-size:14px;font-weight:600;color:rgba(255,255,255,.9)}
+  .lfield input{
+    width:100%;padding:14px 16px;
+    border:1.5px solid rgba(255,255,255,.18);
+    border-radius:12px;
+    font-size:15px;font-family:inherit;
+    background:rgba(0,0,0,.28);
+    color:#fff;outline:none;
+    transition:border-color .2s,box-shadow .2s,background .2s;
+  }
+  .lfield input::placeholder{color:rgba(255,255,255,.4)}
+  .lfield input:focus{
+    border-color:rgba(124,99,255,.8);
+    background:rgba(0,0,0,.4);
+    box-shadow:0 0 0 3px rgba(124,99,255,.25);
+  }
+  .code-row{display:flex;gap:10px}
+  .code-row input{flex:1}
+  .code-btn{
+    flex:0 0 auto;padding:0 18px;border-radius:12px;
+    border:1.5px solid rgba(255,255,255,.22);
+    font-size:14px;font-weight:600;color:#fff;
+    background:rgba(255,255,255,.08);
+    white-space:nowrap;transition:all .2s;
+  }
+  .code-btn:hover:not(:disabled){background:rgba(255,255,255,.16)}
+  .code-btn:disabled{color:rgba(255,255,255,.4);cursor:not-allowed}
 
-    .lfield {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-bottom: 16px
-    }
+  .login-error{
+    color:#FFB4B4;font-size:13px;margin-bottom:12px;
+    display:none;
+  }
+  .login-error.show{display:block}
 
-    .lfield label {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--ink)
-    }
+  .login-submit{
+    width:100%;padding:15px;font-size:16px;margin-top:4px;
+  }
 
-    .lfield input {
-      width: 100%;
-      padding: 14px 16px;
-      border: 1.5px solid var(--line);
-      border-radius: 12px;
-      font-size: 15px;
-      font-family: inherit;
-      outline: none;
-      transition: border-color .2s, box-shadow .2s
-    }
-
-    .lfield input:focus {
-      border-color: var(--purple);
-      box-shadow: 0 0 0 3px rgba(87, 62, 255, .12)
-    }
-
-    .code-row {
-      display: flex;
-      gap: 10px
-    }
-
-    .code-row input {
-      flex: 1
-    }
-
-    .code-btn {
-      flex: 0 0 auto;
-      padding: 0 18px;
-      border-radius: 12px;
-      border: 1.5px solid var(--line);
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--purple);
-      white-space: nowrap
-    }
-
-    .code-btn:disabled {
-      color: #999;
-      border-color: var(--line);
-      cursor: not-allowed
-    }
-
-    .login-error {
-      color: #D14343;
-      font-size: 13px;
-      margin-bottom: 12px;
-      display: none
-    }
-
-    .login-error.show {
-      display: block
-    }
-
-    .login-submit {
-      width: 100%;
-      padding: 15px;
-      font-size: 16px;
-      margin-top: 4px
-    }
-
-    .login-hint {
-      margin-top: 18px;
-      font-size: 12px;
-      color: #999;
-      text-align: center;
-      line-height: 1.5
-    }
-
-    .login-back {
-      display: block;
-      text-align: center;
-      margin-top: 18px;
-      font-size: 14px;
-      color: var(--muted)
-    }
-
-    .login-back:hover {
-      color: var(--purple)
-    }
-  </style>
+  .login-hint{
+    margin-top:18px;font-size:12px;
+    color:rgba(255,255,255,.5);
+    text-align:center;line-height:1.5;
+  }
+  .login-back{
+    display:block;text-align:center;margin-top:16px;
+    font-size:14px;color:rgba(255,255,255,.7);
+    transition:color .2s;
+  }
+  .login-back:hover{color:#fff}
+</style>
 </head>
-
 <body>
 
-  <div class="login-wrap">
-    <div class="login-card">
-      <h1 id="loginTitle">登录智途</h1>
-      <p class="sub" id="loginSub">用手机号快速登录，继续你的升学规划。</p>
+<!-- 背景视频 -->
+<div class="login-bg">
+  <video src="assets/hero.mp4" poster="assets/hero-poster.jpg" autoplay muted loop playsinline></video>
+</div>
 
-      <div class="login-tabs">
-        <button class="login-tab active" data-mode="login" id="tabLogin">登录</button>
-        <button class="login-tab" data-mode="register" id="tabRegister">注册</button>
-      </div>
+<div class="login-wrap">
+  <div class="login-card">
+    <h1 id="loginTitle">登录智途</h1>
+    <p class="sub" id="loginSub">用手机号快速登录，继续你的升学规划。</p>
 
-      <form id="loginForm" novalidate>
-        <div class="lfield">
-          <label for="phone">手机号</label>
-          <input id="phone" type="tel" inputmode="numeric" maxlength="11" placeholder="请输入 11 位手机号" autocomplete="tel">
-        </div>
-        <div class="lfield">
-          <label for="code">验证码</label>
-          <div class="code-row">
-            <input id="code" type="text" inputmode="numeric" maxlength="6" placeholder="6 位验证码"
-              autocomplete="one-time-code">
-            <button type="button" class="code-btn" id="codeBtn">获取验证码</button>
-          </div>
-        </div>
-        <div class="login-error" id="loginError"></div>
-        <button type="submit" class="btn btn-primary login-submit" id="submitBtn">登录</button>
-      </form>
-
-      <p class="login-hint">演示环境：验证码可随意填写 6 位数字。登录状态仅保存在本设备浏览器。</p>
-      <a href="index.html" class="login-back">← 返回首页</a>
+    <div class="login-tabs">
+      <button class="login-tab active" data-mode="login" id="tabLogin">登录</button>
+      <button class="login-tab" data-mode="register" id="tabRegister">注册</button>
     </div>
+
+    <form id="loginForm" novalidate>
+      <div class="lfield">
+        <label for="phone">手机号</label>
+        <input id="phone" type="tel" inputmode="numeric" maxlength="11" placeholder="请输入 11 位手机号" autocomplete="tel">
+      </div>
+      <div class="lfield">
+        <label for="code">验证码</label>
+        <div class="code-row">
+          <input id="code" type="text" inputmode="numeric" maxlength="6" placeholder="6 位验证码" autocomplete="one-time-code">
+          <button type="button" class="code-btn" id="codeBtn">获取验证码</button>
+        </div>
+      </div>
+      <div class="login-error" id="loginError"></div>
+      <button type="submit" class="btn btn-primary login-submit" id="submitBtn">登录</button>
+    </form>
+
+    <p class="login-hint">演示环境：验证码可随意填写 6 位数字。登录状态仅保存在本设备浏览器。</p>
+    <a href="index.html" class="login-back">← 返回首页</a>
   </div>
+</div>
 
-  <script src="app.js"></script>
-  <script>
-    (function () {
-      "use strict";
+<script src="app.js"></script>
+<script>
+(function(){
+  "use strict";
 
-      const params = new URLSearchParams(location.search);
-      const redirect = params.get('redirect') || 'index.html';
+  const params = new URLSearchParams(location.search);
+  const redirect = params.get('redirect') || 'index.html';
 
-      const form = document.getElementById('loginForm');
-      const phoneEl = document.getElementById('phone');
-      const codeEl = document.getElementById('code');
-      const codeBtn = document.getElementById('codeBtn');
-      const errEl = document.getElementById('loginError');
-      const submitBtn = document.getElementById('submitBtn');
-      const title = document.getElementById('loginTitle');
-      const sub = document.getElementById('loginSub');
-      const tabLogin = document.getElementById('tabLogin');
-      const tabRegister = document.getElementById('tabRegister');
+  const form = document.getElementById('loginForm');
+  const phoneEl = document.getElementById('phone');
+  const codeEl = document.getElementById('code');
+  const codeBtn = document.getElementById('codeBtn');
+  const errEl = document.getElementById('loginError');
+  const submitBtn = document.getElementById('submitBtn');
+  const title = document.getElementById('loginTitle');
+  const sub = document.getElementById('loginSub');
+  const tabLogin = document.getElementById('tabLogin');
+  const tabRegister = document.getElementById('tabRegister');
 
-      let mode = 'login';
-      let countdown = 0;
-      let timer = null;
+  let mode = 'login';
+  let countdown = 0;
+  let timer = null;
 
-      function setMode(m) {
-        mode = m;
-        tabLogin.classList.toggle('active', m === 'login');
-        tabRegister.classList.toggle('active', m === 'register');
-        title.textContent = m === 'login' ? '登录智途' : '注册新账号';
-        sub.textContent = m === 'login' ? '用手机号快速登录，继续你的升学规划。' : '注册后即可保存测评记录，跨设备查看。';
-        submitBtn.textContent = m === 'login' ? '登录' : '注册并登录';
-        clearError();
-      }
+  function setMode(m){
+    mode = m;
+    tabLogin.classList.toggle('active', m === 'login');
+    tabRegister.classList.toggle('active', m === 'register');
+    title.textContent = m === 'login' ? '登录智途' : '注册新账号';
+    sub.textContent = m === 'login' ? '用手机号快速登录，继续你的升学规划。' : '注册后即可保存测评记录，跨设备查看。';
+    submitBtn.textContent = m === 'login' ? '登录' : '注册并登录';
+    clearError();
+  }
 
-      function showError(msg) {
-        errEl.textContent = msg;
-        errEl.classList.add('show');
-      }
-      function clearError() { errEl.classList.remove('show'); }
+  function showError(msg){ errEl.textContent = msg; errEl.classList.add('show'); }
+  function clearError(){ errEl.classList.remove('show'); }
 
-      tabLogin.addEventListener('click', () => setMode('login'));
-      tabRegister.addEventListener('click', () => setMode('register'));
+  tabLogin.addEventListener('click', () => setMode('login'));
+  tabRegister.addEventListener('click', () => setMode('register'));
 
-      // 获取验证码（模拟倒计时）
-      codeBtn.addEventListener('click', () => {
-        const phone = phoneEl.value.trim();
-        if (!/^1\d{10}$/.test(phone)) {
-          showError('请输入正确的 11 位手机号');
-          return;
-        }
-        clearError();
-        countdown = 60;
-        codeBtn.disabled = true;
+  codeBtn.addEventListener('click', () => {
+    const phone = phoneEl.value.trim();
+    if (!/^1\d{10}$/.test(phone)){ showError('请输入正确的 11 位手机号'); return; }
+    clearError();
+    countdown = 60;
+    codeBtn.disabled = true;
+    codeBtn.textContent = countdown + 's 后重发';
+    timer = setInterval(() => {
+      countdown--;
+      if (countdown <= 0){
+        clearInterval(timer);
+        codeBtn.disabled = false;
+        codeBtn.textContent = '重新获取';
+      } else {
         codeBtn.textContent = countdown + 's 后重发';
-        timer = setInterval(() => {
-          countdown--;
-          if (countdown <= 0) {
-            clearInterval(timer);
-            codeBtn.disabled = false;
-            codeBtn.textContent = '重新获取';
-          } else {
-            codeBtn.textContent = countdown + 's 后重发';
-          }
-        }, 1000);
-        // 演示：直接把"验证码"提示出来
-        if (window.showToast) window.showToast('演示验证码：123456');
-      });
+      }
+    }, 1000);
+    if (window.showToast) window.showToast('演示验证码：123456');
+  });
 
-      form.addEventListener('submit', e => {
-        e.preventDefault();
-        const phone = phoneEl.value.trim();
-        const code = codeEl.value.trim();
-        if (!/^1\d{10}$/.test(phone)) { showError('请输入正确的 11 位手机号'); return; }
-        if (!/^\d{6}$/.test(code)) { showError('请输入 6 位数字验证码'); return; }
-        clearError();
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const phone = phoneEl.value.trim();
+    const code = codeEl.value.trim();
+    if (!/^1\d{10}$/.test(phone)){ showError('请输入正确的 11 位手机号'); return; }
+    if (!/^\d{6}$/.test(code)){ showError('请输入 6 位数字验证码'); return; }
+    clearError();
 
-        // 写入本地登录态（模拟）
-        const user = {
-          phone,
-          nickname: '用户' + phone.slice(-4),
-          avatar: '',
-          ts: Date.now()
-        };
-        localStorage.setItem('zhitu_user', JSON.stringify(user));
+    const user = {
+      phone,
+      nickname: '用户' + phone.slice(-4),
+      avatar: '',
+      ts: Date.now()
+    };
+    localStorage.setItem('zhitu_user', JSON.stringify(user));
 
-        submitBtn.textContent = '处理中…';
-        submitBtn.disabled = true;
-        setTimeout(() => {
-          window.location.href = redirect;
-        }, 500);
-      });
+    submitBtn.textContent = '处理中…';
+    submitBtn.disabled = true;
+    setTimeout(() => { window.location.href = redirect; }, 500);
+  });
 
-      // 已登录则直接跳回
-      try {
-        const existing = JSON.parse(localStorage.getItem('zhitu_user') || 'null');
-        if (existing && existing.phone) {
-          window.location.href = redirect;
-        }
-      } catch (e) { }
-    })();
-  </script>
+  try {
+    const existing = JSON.parse(localStorage.getItem('zhitu_user') || 'null');
+    if (existing && existing.phone) window.location.href = redirect;
+  } catch(e){}
+})();
+</script>
 </body>
-
 </html>
