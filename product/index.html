@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>智途 · 智能升学规划</title>
+    <meta name="description" content="输入分数与科类，1 分钟获得冲稳保院校参考，并可预约规划师。">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* AI 对话框专属样式（首页） */
+        .ai-box {
+            width: min(600px, 100%);
+            margin-top: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            padding: 12px;
+            border-radius: 24px;
+            background: rgba(0, 0, 0, .12);
+            border: 1px solid rgba(255, 255, 255, .22);
+            box-shadow: 0 18px 50px rgba(0, 0, 0, .25);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        .ai-row {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 14px 12px;
+            border-radius: 16px;
+            background: rgba(0, 0, 0, .6);
+            border: 1px solid rgba(255, 255, 255, .09);
+            transition: border-color .25s;
+        }
+
+        .ai-row.focused {
+            border-color: rgba(124, 99, 255, .55)
+        }
+
+        .ai-orb {
+            width: 28px;
+            height: 28px;
+            flex: 0 0 28px;
+            position: relative;
+            display: grid;
+            place-items: center
+        }
+
+        .ai-ring {
+            position: absolute;
+            inset: 5px;
+            border-radius: 50%;
+            border: 1px solid rgba(124, 99, 255, .6);
+            animation: ai-ring 1.5s ease-out infinite
+        }
+
+        .ai-ring:nth-child(2) {
+            animation-delay: .75s;
+            border-color: rgba(124, 99, 255, .42)
+        }
+
+        .ai-dot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background: var(--purple-2);
+            box-shadow: 0 0 10px rgba(124, 99, 255, .9), 0 0 20px rgba(124, 99, 255, .42);
+            animation: ai-orb 1.5s ease-in-out infinite
+        }
+
+        @keyframes ai-orb {
+
+            0%,
+            100% {
+                transform: scale(.84);
+                filter: brightness(.9)
+            }
+
+            45% {
+                transform: scale(1.08);
+                filter: brightness(1.25)
+            }
+
+            60% {
+                transform: scale(.96);
+                filter: brightness(1.08)
+            }
+        }
+
+        @keyframes ai-ring {
+            0% {
+                transform: scale(.65);
+                opacity: .65
+            }
+
+            75%,
+            100% {
+                transform: scale(1.7);
+                opacity: 0
+            }
+        }
+
+        .ai-text {
+            flex: 1;
+            min-height: 29px;
+            font-size: 18px;
+            line-height: 1.35;
+            color: rgba(255, 255, 255, .96);
+            letter-spacing: -.01em;
+            text-align: left
+        }
+
+        .ai-input {
+            flex: 1;
+            min-width: 0;
+            background: none;
+            border: 0;
+            outline: none;
+            font: inherit;
+            font-size: 18px;
+            line-height: 1.35;
+            letter-spacing: -.01em;
+            color: #fff;
+            padding: 0;
+            caret-color: var(--purple-2);
+        }
+
+        .ai-input::placeholder {
+            color: rgba(255, 255, 255, .35)
+        }
+
+        .ai-caret {
+            display: inline-block;
+            width: 2px;
+            height: 1.05em;
+            margin-left: 3px;
+            vertical-align: -.14em;
+            background: rgba(255, 255, 255, .88);
+            animation: caret .9s step-end infinite
+        }
+
+        @keyframes caret {
+
+            0%,
+            45% {
+                opacity: 1
+            }
+
+            46%,
+            100% {
+                opacity: 0
+            }
+        }
+
+        .ai-send {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            flex: 0 0 34px;
+            background: var(--purple);
+            display: grid;
+            place-items: center;
+            opacity: 0;
+            transform: scale(.8);
+            transition: all .2s;
+            pointer-events: none;
+        }
+
+        .ai-send.show {
+            opacity: 1;
+            transform: none;
+            pointer-events: auto
+        }
+
+        .ai-send:hover {
+            background: var(--purple-2)
+        }
+
+        .ai-send svg {
+            width: 16px;
+            height: 16px;
+            stroke: #fff;
+            fill: none
+        }
+
+        .ai-foot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 6px 4px;
+            gap: 10px
+        }
+
+        .ai-dots {
+            display: flex;
+            gap: 6px;
+            flex: 0 0 auto
+        }
+
+        .ai-dots span {
+            width: 6px;
+            height: 6px;
+            border-radius: 99px;
+            background: rgba(255, 255, 255, .28);
+            transition: all .22s
+        }
+
+        .ai-dots span.on {
+            width: 20px;
+            background: #fff
+        }
+
+        .ai-icons {
+            display: flex;
+            gap: 14px;
+            color: rgba(255, 255, 255, .6);
+            flex: 0 0 auto
+        }
+
+        .ai-icons svg {
+            width: 22px;
+            height: 22px
+        }
+
+        .ai-chips {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 4px
+        }
+
+        .ai-chip {
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 13px;
+            background: rgba(255, 255, 255, .08);
+            color: rgba(255, 255, 255, .85);
+            border: 1px solid rgba(255, 255, 255, .14);
+            transition: all .2s;
+            cursor: pointer;
+        }
+
+        .ai-chip:hover {
+            background: rgba(255, 255, 255, .18);
+            color: #fff;
+            border-color: rgba(255, 255, 255, .3)
+        }
+
+        /* 自定义 logo：图片 + 名称，最左边 */
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 20px;
+            color: #fff;
+            flex-shrink: 0
+        }
+
+        .logo img {
+            height: 32px;
+            width: auto;
+            display: block
+        }
+
+        .site-header.scrolled .logo {
+            color: var(--ink)
+        }
+
+        /* 导航居中 */
+        .nav {
+            flex: 1;
+            display: flex;
+            justify-content: center
+        }
+
+        /* 免费测评按钮最右边 */
+        .header-cta {
+            flex-shrink: 0;
+            margin-left: auto
+        }
+
+        /* 页头布局：完全去掉 wrap 约束，紧贴屏幕边缘 */
+        header.site-header .wrap,
+        header#header .wrap,
+        .site-header>.wrap {
+            padding: 0 !important;
+            max-width: 100% !important;
+            width: 100% !important;
+            margin: 0 !important;
+        }
+
+        header.site-header .header-inner,
+        header#header .header-inner,
+        .site-header .wrap .header-inner {
+            display: flex !important;
+            align-items: center !important;
+            height: 72px !important;
+            gap: 20px !important;
+            width: 100% !important;
+            padding: 0 30px !important;
+            box-sizing: border-box !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="site-header" id="header">
+        <div class="wrap header-inner">
+            <a href="index.html" class="logo">
+                <img src="assets/logo.png" alt="智途">
+                <span>智途</span>
+            </a>
+            <nav class="nav">
+                <div class="nav-item"><a class="nav-link active" href="index.html">首页</a></div>
+                <div class="nav-item"><a class="nav-link" href="assess.html">开始测评</a></div>
+                <div class="nav-item"><a class="nav-link" href="compare.html">我的对比</a></div>
+                <div class="nav-item"><a class="nav-link" href="contact.html">预约咨询</a></div>
+            </nav>
+            <div class="header-cta">
+                <button class="burger" id="burger" aria-label="菜单"
+                    aria-expanded="false"><span></span><span></span><span></span></button>
+            </div>
+        </div>
+    </header>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="m-group"><a class="m-toggle" href="index.html">首页</a></div>
+        <div class="m-group"><a class="m-toggle" href="assess.html">开始测评</a></div>
+        <div class="m-group"><a class="m-toggle" href="compare.html">我的对比</a></div>
+        <div class="m-group"><a class="m-toggle" href="contact.html">预约咨询</a></div>
+    </div>
+
+    <section class="hero">
+        <div class="hero-media">
+            <video src="assets/hero.mp4" poster="assets/hero-poster.jpg" autoplay muted loop playsinline></video>
+            <div class="fallback"></div>
+        </div>
+        <div class="hero-overlay"></div>
+
+        <div class="hero-content">
+            <div class="hero-eyebrow">AI × 专家，双重护航</div>
+            <h1>1 分钟，测测你的升学方向</h1>
+            <p class="hero-sub">输入分数与科类，获得冲稳保院校参考与专业建议。可保存、可对比、可预约规划师深入沟通。</p>
+
+            <!-- AI 对话框 -->
+            <div class="ai-box">
+                <div class="ai-row" id="aiRow">
+                    <div class="ai-orb" aria-hidden="true">
+                        <span class="ai-ring"></span>
+                        <span class="ai-ring"></span>
+                        <span class="ai-dot"></span>
+                    </div>
+                    <div class="ai-text" id="aiText" role="status" aria-live="polite"><span class="ai-caret"></span>
+                    </div>
+                    <input class="ai-input" id="aiInput" type="text" placeholder="输入你的问题，例如：620 分能上哪些 985？"
+                        style="display:none" aria-label="向 AI 提问">
+                    <button class="ai-send" id="aiSend" aria-label="发送">
+                        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14M13 6l6 6-6 6" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="ai-foot">
+                    <div class="ai-dots" id="aiDots" aria-hidden="true">
+                        <span class="on"></span><span></span><span></span><span></span><span></span>
+                    </div>
+                    <div class="ai-icons" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="9" y="3" width="6" height="11" rx="3" />
+                            <path d="M6.5 11a5.5 5.5 0 0 0 11 0M12 16.5V21M9 21h6" />
+                        </svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M8 4H4v4M4 4l6 6M16 20h4v-4M20 20l-6-6" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 快捷问题 -->
+            <div class="ai-chips" id="aiChips">
+                <button class="ai-chip" data-q="620 分能冲哪些 985？">620 分能冲哪些 985？</button>
+                <button class="ai-chip" data-q="考研择校怎么平衡院校和专业？">考研择校怎么平衡？</button>
+                <button class="ai-chip" data-q="数学薄弱该怎么规划复习？">数学薄弱怎么补？</button>
+                <button class="ai-chip" data-q="帮我生成一份高三提分计划">生成高三提分计划</button>
+            </div>
+
+            <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:8px">
+                <a href="assess.html" class="btn btn-primary">开始免费测评</a>
+                <a href="compare.html" class="btn btn-ghost">查看我的对比</a>
+            </div>
+        </div>
+    </section>
+
+    <script src="data/schools.js"></script>
+    <script src="data/rank-map.js"></script>
+    <script src="app.js"></script>
+    <script>
+        (function () {
+            "use strict";
+
+            const aiText = document.getElementById('aiText');
+            const aiInput = document.getElementById('aiInput');
+            const aiSend = document.getElementById('aiSend');
+            const aiRow = document.getElementById('aiRow');
+            const aiChips = document.getElementById('aiChips');
+            const aiDots = document.getElementById('aiDots');
+
+            const caret = document.createElement('span');
+            caret.className = 'ai-caret';
+
+            const lines = [
+                "帮我看看，620 分能冲哪些 985？",
+                "考研择校，如何平衡院校和专业？",
+                "我的数学薄弱，该怎么规划复习？",
+                "帮我生成一份高三全年提分计划。"
+            ];
+
+            let li = 0, ci = 0, deleting = false;
+            let typingDone = false;
+
+            function renderTyping(text) {
+                aiText.textContent = text;
+                aiText.appendChild(caret);
+            }
+
+            function tick() {
+                if (typingDone) return;
+                const line = lines[li];
+                if (!deleting) {
+                    ci++;
+                    if (ci > line.length) {
+                        deleting = true;
+                        renderTyping(line);
+                        setTimeout(tick, 1600);
+                        return;
+                    }
+                } else {
+                    ci--;
+                    if (ci < 0) {
+                        deleting = false;
+                        ci = 0;
+                        li = (li + 1) % lines.length;
+                        renderTyping('');
+                        setTimeout(tick, 400);
+                        return;
+                    }
+                }
+                renderTyping(line.slice(0, ci));
+                setTimeout(tick, deleting ? 28 : 70);
+            }
+
+            function switchToInput() {
+                typingDone = true;
+                aiText.style.display = 'none';
+                aiInput.style.display = 'block';
+                aiInput.focus();
+                aiRow.classList.add('focused');
+                updateDots(1);
+            }
+
+            function updateDots(idx) {
+                Array.from(aiDots.children).forEach((d, i) => {
+                    d.classList.toggle('on', i === idx);
+                });
+            }
+
+            renderTyping('');
+            setTimeout(tick, 900);
+            setTimeout(() => { if (!typingDone) switchToInput(); }, 7000);
+
+            aiText.addEventListener('click', switchToInput);
+            aiRow.addEventListener('click', e => {
+                if (e.target === aiInput || e.target === aiSend) return;
+                if (!typingDone) switchToInput();
+            });
+
+            aiInput.addEventListener('input', () => {
+                aiSend.classList.toggle('show', aiInput.value.trim().length > 0);
+                updateDots(aiInput.value.trim() ? 2 : 1);
+            });
+
+            aiInput.addEventListener('keydown', e => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    submitQuestion();
+                }
+            });
+
+            aiSend.addEventListener('click', submitQuestion);
+
+            function submitQuestion() {
+                const q = aiInput.value.trim();
+                if (!q) {
+                    aiInput.focus();
+                    return;
+                }
+                const url = 'assess.html?q=' + encodeURIComponent(q);
+                window.location.href = url;
+            }
+
+            aiChips.addEventListener('click', e => {
+                const chip = e.target.closest('.ai-chip');
+                if (!chip) return;
+                const q = chip.dataset.q;
+                if (!typingDone) {
+                    switchToInput();
+                }
+                aiInput.value = q;
+                aiSend.classList.add('show');
+                updateDots(2);
+                aiInput.focus();
+                setTimeout(submitQuestion, 220);
+            });
+        })();
+    </script>
+</body>
+
+</html>

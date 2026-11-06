@@ -1,0 +1,917 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>智途 · 智能高考考研咨询</title>
+<meta name="description" content="智途，用 AI 与专家结合，为高考志愿与考研规划提供个性化咨询。">
+<style>
+  :root{
+    --purple:#573EFF;
+    --purple-2:#7C63FF;
+    --ink:#0E0B1A;
+    --ink-2:#222;
+    --muted:rgba(255,255,255,.65);
+    --paper:#FBFAF9;
+    --warm:#F2ECE8;
+    --radius:16px;
+    --max:1200px;
+    --font:"Geist","Inter","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--font);
+    color:var(--ink-2);
+    background:#fff;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+  }
+  a{color:inherit;text-decoration:none}
+  img,video{display:block;max-width:100%}
+  button{font:inherit;cursor:pointer;border:0;background:none}
+  .wrap{width:100%;max-width:var(--max);margin:0 auto;padding:0 24px}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;
+    padding:14px 30px;border-radius:999px;font-size:16px;
+    transition:transform .2s ease,opacity .2s ease;
+  }
+  .btn:hover{transform:translateY(-1px);opacity:.92}
+  .btn-primary{background:var(--purple);color:#fff}
+  .btn-white{background:#fff;color:var(--purple)}
+  .btn-ghost{background:rgba(255,255,255,.15);color:#fff;backdrop-filter:blur(8px)}
+  .eyebrow{
+    font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--purple);font-weight:600;
+  }
+
+  /* ---------- Header ---------- */
+  .site-header{
+    position:fixed;inset:0 0 auto 0;z-index:50;
+    transition:background .3s ease,backdrop-filter .3s ease;
+  }
+  .site-header.scrolled{
+    background:rgba(255,255,255,.82);
+    backdrop-filter:blur(14px);
+    box-shadow:0 1px 0 rgba(0,0,0,.06);
+  }
+  .header-inner{
+    display:flex;align-items:center;justify-content:space-between;
+    height:72px;
+  }
+  .logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px;color:#fff}
+  .site-header.scrolled .logo{color:var(--ink)}
+  .logo-mark{
+    width:30px;height:30px;border-radius:9px;
+    background:linear-gradient(135deg,var(--purple),var(--purple-2));
+    display:grid;place-items:center;color:#fff;font-size:15px;font-weight:800;
+  }
+  .nav{display:flex;align-items:center;gap:6px}
+  .nav > .nav-item{position:relative}
+  .nav-link{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:10px 14px;border-radius:10px;
+    font-size:15px;color:rgba(255,255,255,.9);
+    transition:background .2s ease,color .2s ease;
+  }
+  .site-header.scrolled .nav-link{color:var(--ink-2)}
+  .nav-link:hover{background:rgba(255,255,255,.12)}
+  .site-header.scrolled .nav-link:hover{background:rgba(87,62,255,.08);color:var(--purple)}
+  .caret{
+    width:8px;height:8px;border-right:1.6px solid currentColor;border-bottom:1.6px solid currentColor;
+    transform:rotate(45deg) translateY(-2px);transition:transform .2s ease;
+  }
+  .nav-item.open .caret{transform:rotate(225deg) translateY(-2px)}
+  .dropdown{
+    position:absolute;top:calc(100% + 10px);left:0;min-width:260px;
+    background:#fff;border-radius:14px;padding:8px;
+    box-shadow:0 18px 50px rgba(20,10,60,.16);
+    opacity:0;visibility:hidden;transform:translateY(8px);
+    transition:all .2s ease;
+  }
+  .nav-item.open .dropdown{opacity:1;visibility:visible;transform:translateY(0)}
+  .drop-link{
+    display:block;padding:12px 14px;border-radius:10px;
+    font-size:14px;color:var(--ink-2);transition:background .15s ease;
+  }
+  .drop-link strong{display:block;font-size:15px;color:var(--ink);margin-bottom:2px}
+  .drop-link span{color:#777;font-size:13px}
+  .drop-link:hover{background:#F4F1FF}
+  .header-cta{display:flex;align-items:center;gap:10px}
+  .btn-login{padding:11px 22px;font-size:15px}
+  .burger{
+    display:none;width:44px;height:44px;border-radius:10px;
+    position:relative;background:rgba(255,255,255,.12);
+  }
+  .site-header.scrolled .burger{background:rgba(87,62,255,.08)}
+  .burger span{
+    position:absolute;left:12px;right:12px;height:2px;border-radius:2px;
+    background:#fff;transition:all .25s ease;
+  }
+  .site-header.scrolled .burger span{background:var(--ink)}
+  .burger span:nth-child(1){top:15px}
+  .burger span:nth-child(2){top:21px}
+  .burger span:nth-child(3){top:27px}
+  .burger.active span:nth-child(1){top:21px;transform:rotate(45deg)}
+  .burger.active span:nth-child(2){opacity:0}
+  .burger.active span:nth-child(3){top:21px;transform:rotate(-45deg)}
+
+  /* Mobile drawer */
+  .mobile-menu{
+    position:fixed;inset:72px 0 0 0;z-index:45;
+    background:#fff;padding:20px 24px 40px;
+    overflow-y:auto;
+    transform:translateX(100%);transition:transform .3s ease;
+  }
+  .mobile-menu.open{transform:translateX(0)}
+  .m-group{border-bottom:1px solid #EEE}
+  .m-toggle{
+    width:100%;display:flex;justify-content:space-between;align-items:center;
+    padding:18px 0;font-size:17px;color:var(--ink);
+  }
+  .m-toggle .caret{border-color:var(--ink)}
+  .m-group.open .m-toggle .caret{transform:rotate(225deg) translateY(-2px)}
+  .m-panel{max-height:0;overflow:hidden;transition:max-height .3s ease}
+  .m-group.open .m-panel{max-height:400px}
+  .m-panel a{display:block;padding:12px 6px;font-size:15px;color:#555}
+  .m-cta{display:flex;flex-direction:column;gap:12px;margin-top:24px}
+  .m-cta .btn{width:100%}
+
+  /* ---------- Hero ---------- */
+  .hero{position:relative;min-height:100svh;display:grid;place-items:center;overflow:hidden;color:#fff}
+  .hero-media{position:absolute;inset:0;z-index:0}
+  .hero-media video,.hero-media .fallback{
+    width:100%;height:100%;object-fit:cover;
+  }
+  .hero-media .fallback{
+    background:
+      radial-gradient(120% 90% at 50% 0%,#2A1E6B 0%,#0E0B1A 70%),
+      radial-gradient(80% 60% at 80% 80%,#573EFF33 0%,transparent 60%);
+  }
+  .hero-overlay{
+    position:absolute;inset:0;z-index:1;
+    background:radial-gradient(139% 111% at 50.8% 0%,#0000 0%,#000000d9 99%);
+  }
+  .hero-content{
+    position:relative;z-index:2;text-align:center;
+    padding:120px 24px 80px;max-width:960px;
+    display:flex;flex-direction:column;align-items:center;gap:20px;
+  }
+  .hero-eyebrow{
+    font-size:18px;font-weight:600;color:#fff;
+    letter-spacing:.02em;
+  }
+  .hero h1{
+    font-size:clamp(38px,6vw,72px);
+    line-height:1.08;letter-spacing:-.03em;font-weight:600;
+  }
+  .hero h1 strong{font-weight:700}
+  .hero-sub{
+    font-size:clamp(15px,1.6vw,18px);
+    color:rgba(255,255,255,.72);max-width:620px;
+  }
+
+  /* AI prompt box */
+  .ai-box{
+    width:min(560px,100%);
+    margin-top:14px;
+    display:flex;flex-direction:column;gap:16px;
+    padding:12px;border-radius:24px;
+    background:rgba(0,0,0,.12);
+    border:1px solid rgba(255,255,255,.22);
+    box-shadow:0 18px 50px rgba(0,0,0,.25);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+  }
+  .ai-row{
+    display:flex;align-items:center;gap:13px;
+    padding:14px 12px;border-radius:16px;
+    background:rgba(0,0,0,.6);
+    border:1px solid rgba(255,255,255,.09);
+  }
+  .ai-orb{
+    width:28px;height:28px;flex:0 0 28px;position:relative;
+    display:grid;place-items:center;
+  }
+  .ai-ring{
+    position:absolute;inset:5px;border-radius:50%;
+    border:1px solid rgba(124,99,255,.6);
+    animation:ai-ring 1.5s ease-out infinite;
+  }
+  .ai-ring:nth-child(2){animation-delay:.75s;border-color:rgba(124,99,255,.42)}
+  .ai-dot{
+    width:11px;height:11px;border-radius:50%;
+    background:var(--purple-2);
+    box-shadow:0 0 10px rgba(124,99,255,.9),0 0 20px rgba(124,99,255,.42);
+    animation:ai-orb 1.5s ease-in-out infinite;
+  }
+  @keyframes ai-orb{
+    0%,100%{transform:scale(.84);filter:brightness(.9)}
+    45%{transform:scale(1.08);filter:brightness(1.25)}
+    60%{transform:scale(.96);filter:brightness(1.08)}
+  }
+  @keyframes ai-ring{
+    0%{transform:scale(.65);opacity:.65}
+    75%,100%{transform:scale(1.7);opacity:0}
+  }
+  .ai-text{
+    flex:1;min-height:29px;font-size:18px;line-height:1.35;
+    color:rgba(255,255,255,.96);letter-spacing:-.01em;text-align:left;
+  }
+  .ai-caret{
+    display:inline-block;width:2px;height:1.05em;margin-left:3px;
+    vertical-align:-.14em;background:rgba(255,255,255,.88);
+    animation:caret .9s step-end infinite;
+  }
+  @keyframes caret{0%,45%{opacity:1}46%,100%{opacity:0}}
+  .ai-foot{display:flex;justify-content:space-between;align-items:center;padding:0 6px 4px}
+  .ai-dots{display:flex;gap:6px}
+  .ai-dots span{width:6px;height:6px;border-radius:99px;background:rgba(255,255,255,.28);transition:all .22s ease}
+  .ai-dots span:first-child{width:20px;background:#fff}
+  .ai-icons{display:flex;gap:14px;color:rgba(255,255,255,.6)}
+  .ai-icons svg{width:22px;height:22px}
+
+  /* ---------- Generic section ---------- */
+  section{position:relative}
+  .section-pad{padding:110px 0}
+  .section-head{max-width:720px;margin-bottom:56px}
+  .section-head.center{margin-left:auto;margin-right:auto;text-align:center}
+  .section-head h2{
+    font-size:clamp(30px,4vw,46px);line-height:1.15;
+    letter-spacing:-.02em;color:var(--ink);font-weight:600;
+  }
+  .section-head h2 em{color:var(--purple);font-style:normal}
+  .section-head p{margin-top:18px;font-size:17px;color:#666}
+
+  /* Intro / quote */
+  .intro{background:var(--paper);padding:24px 0}
+  .intro-card{
+    background:var(--warm);border-radius:24px;
+    padding:80px 56px;
+    display:grid;gap:40px;
+  }
+  .intro-quote{
+    font-size:clamp(26px,3.4vw,42px);line-height:1.28;
+    letter-spacing:-.02em;color:var(--purple);font-weight:600;
+    max-width:900px;
+  }
+  .intro-quote .w{display:inline-block;opacity:0;transform:translateY(20px);transition:all .7s cubic-bezier(.23,1,.32,1)}
+  .intro-quote .w.in{opacity:1;transform:none}
+  .intro-meta{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
+  .author{display:flex;flex-direction:column;gap:4px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#555}
+  .author strong{color:var(--ink)}
+  .stat-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+    margin-top:12px;
+  }
+  .stat-card{
+    position:relative;border-radius:16px;overflow:hidden;
+    min-height:240px;display:flex;flex-direction:column;justify-content:space-between;
+    padding:24px;color:#fff;
+    background:linear-gradient(160deg,#2A1E6B,#0E0B1A);
+  }
+  .stat-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55}
+  .stat-card .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.1),rgba(0,0,0,.7))}
+  .stat-card p{position:relative;font-size:14px;line-height:1.45;max-width:220px}
+  .stat-num{position:relative;font-size:52px;line-height:1;letter-spacing:-.04em;font-weight:500}
+
+  /* Feature cards (dark images) */
+  .features{padding:120px 0}
+  .feature{
+    display:grid;grid-template-columns:1fr 1fr;gap:20px;
+    margin-bottom:20px;
+  }
+  .feature.reverse .f-media{order:2}
+  .f-media{
+    position:relative;border-radius:var(--radius);overflow:hidden;
+    min-height:420px;
+    display:flex;flex-direction:column;justify-content:flex-end;
+    padding:32px;color:#fff;
+    background:linear-gradient(25deg,rgba(0,0,0,.9) 18%,rgba(0,0,0,.25) 55%),#2A1E6B;
+  }
+  .f-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+  .f-media::after{
+    content:"";position:absolute;inset:0;z-index:1;
+    background:linear-gradient(25deg,rgba(0,0,0,.9) 18%,rgba(0,0,0,.25) 55%);
+  }
+  .f-media .f-icon{
+    position:relative;z-index:2;align-self:flex-start;
+    width:48px;height:48px;border-radius:10px;
+    background:rgba(255,255,255,.15);backdrop-filter:blur(8px);
+    display:grid;place-items:center;margin-bottom:auto;
+  }
+  .f-media .f-icon svg{width:24px;height:24px;stroke:#fff}
+  .f-media p{position:relative;z-index:2;font-size:17px;line-height:1.5;max-width:90%}
+  .f-side{
+    background:var(--warm);border-radius:var(--radius);
+    padding:40px;display:flex;flex-direction:column;justify-content:center;
+  }
+  .f-side h3{font-size:clamp(24px,3vw,36px);letter-spacing:-.02em;color:var(--ink);line-height:1.15}
+  .f-side p{margin-top:16px;color:#555;font-size:16px}
+
+  /* Benefits grid */
+  .benefits{background:#fff;padding:100px 0}
+  .benefit-layout{display:grid;grid-template-columns:.9fr 1.3fr;gap:20px}
+  .benefit-hero{
+    position:relative;border-radius:var(--radius);overflow:hidden;
+    min-height:560px;padding:40px;color:#fff;
+    display:flex;flex-direction:column;justify-content:space-between;
+    background:linear-gradient(#000000e6 0%,#0000 66%,#000000e6 100%),#573EFF;
+  }
+  .benefit-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.35}
+  .benefit-hero .bh-text{position:relative;z-index:2}
+  .benefit-hero h2{font-size:clamp(26px,3vw,36px);line-height:1.15;letter-spacing:-.02em}
+  .benefit-hero p{margin-top:16px;color:rgba(255,255,255,.8);font-size:16px;max-width:360px}
+  .benefit-hero .btn{align-self:flex-start;position:relative;z-index:2}
+  .benefit-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .bcard{
+    background:var(--purple);color:#fff;border-radius:var(--radius);
+    padding:32px;display:flex;flex-direction:column;gap:16px;
+    opacity:0;transform:translateY(24px);transition:all .6s ease;
+  }
+  .bcard.in{opacity:1;transform:none}
+  .bcard .bicon{
+    width:44px;height:44px;border-radius:10px;background:#fff;
+    display:grid;place-items:center;
+  }
+  .bcard .bicon svg{width:24px;height:24px;stroke:var(--ink)}
+  .bcard h3{font-size:22px;letter-spacing:-.01em}
+  .bcard p{font-size:15px;color:rgba(255,255,255,.85);line-height:1.5}
+
+  /* Blog */
+  .blog{padding:100px 0;background:#fff}
+  .blog-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:48px;flex-wrap:wrap}
+  .blog-head h2{font-size:clamp(30px,4vw,46px);letter-spacing:-.02em;color:var(--ink);font-weight:600}
+  .blog-head p{margin-top:12px;color:#666;max-width:520px}
+  .blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .post{
+    display:flex;flex-direction:column;
+    background:var(--paper);border-radius:var(--radius);overflow:hidden;
+    transition:transform .25s ease,box-shadow .25s ease;
+  }
+  .post:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(20,10,60,.1)}
+  .post-img{aspect-ratio:16/10;background:linear-gradient(135deg,#2A1E6B,#573EFF);overflow:hidden}
+  .post-img img{width:100%;height:100%;object-fit:cover}
+  .post-body{padding:22px;display:flex;flex-direction:column;gap:12px;flex:1}
+  .post-meta{display:flex;align-items:center;gap:10px;font-size:12px;color:#777;letter-spacing:.04em}
+  .tag{background:var(--warm);color:#5A4638;padding:5px 10px;border-radius:8px;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+  .post h3{font-size:19px;line-height:1.3;letter-spacing:-.01em;color:var(--ink)}
+  .post-foot{margin-top:auto;display:flex;align-items:center;gap:10px;padding-top:8px}
+  .avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--purple),#FF9A6B);display:grid;place-items:center;color:#fff;font-weight:700;font-size:13px}
+  .post-foot small{display:block;color:#777;font-size:12px}
+  .post-foot strong{font-size:13px;color:var(--ink)}
+
+  /* CTA */
+  .cta{padding:100px 0;background:var(--paper)}
+  .cta-inner{
+    background:var(--purple);border-radius:24px;
+    padding:80px 40px;text-align:center;color:#fff;
+    display:flex;flex-direction:column;align-items:center;gap:20px;
+  }
+  .cta-inner h2{font-size:clamp(28px,4vw,44px);letter-spacing:-.02em;line-height:1.15;max-width:700px}
+  .cta-inner p{color:rgba(255,255,255,.8);max-width:520px}
+
+  /* Footer */
+  .site-footer{background:var(--purple);color:#fff;padding:80px 0 40px}
+  .footer-top{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:48px;padding-bottom:56px;border-bottom:1px solid rgba(255,255,255,.18)}
+  .footer-brand h3{font-size:26px;letter-spacing:-.01em;margin-bottom:20px}
+  .footer-brand .contact{display:flex;flex-direction:column;gap:10px;font-size:16px}
+  .footer-brand .contact a{color:rgba(255,255,255,.85)}
+  .footer-brand .contact a:hover{color:#fff}
+  .footer-col h4{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:18px}
+  .footer-col ul{list-style:none;display:flex;flex-direction:column;gap:12px}
+  .footer-col a{font-size:15px;color:rgba(255,255,255,.85)}
+  .footer-col a:hover{color:#fff}
+  .footer-bottom{display:flex;justify-content:space-between;align-items:center;gap:20px;padding-top:28px;flex-wrap:wrap;font-size:13px;color:rgba(255,255,255,.65)}
+  .socials{display:flex;gap:16px}
+  .socials a{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.12);display:grid;place-items:center;transition:background .2s}
+  .socials a:hover{background:rgba(255,255,255,.24)}
+  .socials svg{width:16px;height:16px;fill:#fff}
+
+  /* Reveal on scroll */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.23,1,.32,1),transform .8s cubic-bezier(.23,1,.32,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* Responsive */
+  @media (max-width:960px){
+    .nav,.header-cta .btn-login{display:none}
+    .burger{display:block}
+    .intro-card{padding:56px 32px}
+    .stat-grid{grid-template-columns:1fr}
+    .feature{grid-template-columns:1fr}
+    .feature.reverse .f-media{order:0}
+    .f-media{min-height:340px}
+    .benefit-layout{grid-template-columns:1fr}
+    .blog-grid{grid-template-columns:1fr 1fr}
+    .footer-top{grid-template-columns:1fr 1fr}
+  }
+  @media (max-width:640px){
+    .section-pad{padding:72px 0}
+    .intro-card{padding:40px 24px;border-radius:18px}
+    .benefit-grid{grid-template-columns:1fr}
+    .blog-grid{grid-template-columns:1fr}
+    .footer-top{grid-template-columns:1fr}
+    .hero-content{padding:110px 20px 70px}
+    .ai-text{font-size:16px}
+    .f-side{padding:28px}
+    .stat-num{font-size:44px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header class="site-header" id="header">
+  <div class="wrap header-inner">
+    <a href="#" class="logo">
+      <span class="logo-mark">智</span>
+      <span>智途</span>
+    </a>
+
+    <nav class="nav" aria-label="主导航">
+      <div class="nav-item"><a class="nav-link" href="#">首页</a></div>
+      <div class="nav-item" data-dropdown>
+        <button class="nav-link" aria-haspopup="true" aria-expanded="false">
+          咨询服务 <span class="caret"></span>
+        </button>
+        <div class="dropdown">
+          <a class="drop-link" href="#"><strong>高考志愿规划</strong><span>基于分数与兴趣的智能院校匹配</span></a>
+          <a class="drop-link" href="#"><strong>考研全程规划</strong><span>择校、复习、复试一站式咨询</span></a>
+          <a class="drop-link" href="#"><strong>AI 学科测评</strong><span>快速定位强弱项，生成提分路径</span></a>
+        </div>
+      </div>
+      <div class="nav-item"><a class="nav-link" href="#features">关于我们</a></div>
+      <div class="nav-item"><a class="nav-link" href="#blog">资讯</a></div>
+      <div class="nav-item"><a class="nav-link" href="#contact">联系</a></div>
+    </nav>
+
+    <div class="header-cta">
+      <a href="#contact" class="btn btn-white btn-login">预约咨询</a>
+      <button class="burger" id="burger" aria-label="打开菜单" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile drawer -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="m-group"><a class="m-toggle" href="#">首页</a></div>
+  <div class="m-group">
+    <button class="m-toggle" aria-expanded="false">咨询服务 <span class="caret"></span></button>
+    <div class="m-panel">
+      <a href="#">高考志愿规划</a>
+      <a href="#">考研全程规划</a>
+      <a href="#">AI 学科测评</a>
+    </div>
+  </div>
+  <div class="m-group"><a class="m-toggle" href="#features">关于我们</a></div>
+  <div class="m-group"><a class="m-toggle" href="#blog">资讯</a></div>
+  <div class="m-group"><a class="m-toggle" href="#contact">联系</a></div>
+  <div class="m-cta">
+    <a href="#contact" class="btn btn-primary">预约咨询</a>
+    <a href="#" class="btn btn-ghost" style="color:var(--purple);background:#F4F1FF">登录</a>
+  </div>
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-media">
+    <!-- 替换成你的未来感主题视频；没有视频时 fallback 渐变会显示 -->
+    <video src="./assets/hero.mp4" poster="./assets/hero-poster.jpg" autoplay muted loop playsinline></video>
+    <div class="fallback"></div>
+  </div>
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">AI × 专家，双重护航</div>
+    <h1><strong>让每一次升学选择<br>都看得更远</strong></h1>
+    <p class="hero-sub">高考志愿与考研规划，用智能测评、数据匹配与一对一专家咨询，为你规划更清晰的未来。</p>
+
+    <div class="ai-box">
+      <div class="ai-row">
+        <div class="ai-orb" aria-hidden="true">
+          <span class="ai-ring"></span>
+          <span class="ai-ring"></span>
+          <span class="ai-dot"></span>
+        </div>
+        <div class="ai-text" id="aiText" role="status" aria-live="polite">
+          <span class="ai-caret"></span>
+        </div>
+      </div>
+      <div class="ai-foot">
+        <div class="ai-dots" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="ai-icons" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6.5 11a5.5 5.5 0 0 0 11 0M12 16.5V21M9 21h6"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4H4v4M4 4l6 6M16 20h4v-4M20 20l-6-6"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <a href="#contact" class="btn btn-white" style="margin-top:8px">预约免费咨询</a>
+  </div>
+</section>
+
+<!-- ============ INTRO ============ -->
+<section class="intro" id="intro">
+  <div class="wrap">
+    <div class="intro-card reveal">
+      <div class="intro-quote" id="quote">
+        “每一个升学选择，背后都是一个家庭的期待。智途希望用技术与专业，让这份期待少一点焦虑，多一点确定。”
+      </div>
+      <div class="intro-meta">
+        <div class="author">
+          <strong>李智</strong>
+          <span>智途创始人 &amp; 首席规划师</span>
+        </div>
+        <div class="stat-grid">
+          <div class="stat-card">
+            <p>超过 65% 的考生在志愿填报时，对专业与院校的真实情况了解不足</p>
+            <div class="stat-num" data-count="65" data-suffix="%">0%</div>
+          </div>
+          <div class="stat-card">
+            <p>近 40% 的大学生表示，如果重来一次会重新选择专业</p>
+            <div class="stat-num" data-count="40" data-suffix="%">0%</div>
+          </div>
+          <div class="stat-card">
+            <p>90% 的考研上岸者认为，科学的择校与复习规划是关键</p>
+            <div class="stat-num" data-count="90" data-suffix="%">0%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FEATURES ============ -->
+<section class="features" id="features">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">我们的服务</div>
+      <h2>为每一个关键节点，<br>提供<em>主动、个性化</em>的升学支持。</h2>
+    </div>
+
+    <div class="feature reveal">
+      <div class="f-media">
+        <img src="./assets/feature-1.jpg" alt="">
+        <div class="f-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 8l10 5 10-5-10-5Z"/><path d="M2 8v6l10 5 10-5V8"/></svg>
+        </div>
+        <p>基于分数、兴趣与性格测评，智能匹配院校与专业，生成可执行的志愿填报方案，让每一分都不被浪费。</p>
+      </div>
+      <div class="f-side">
+        <h3>高考志愿规划</h3>
+        <p>从出分到填报，提供院校数据、专业解读与专家一对一沟通，帮你在复杂选择中找到最适合的方向。</p>
+      </div>
+    </div>
+
+    <div class="feature reverse reveal">
+      <div class="f-media">
+        <img src="./assets/feature-2.jpg" alt="">
+        <div class="f-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v14"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>
+        </div>
+        <p>择校定位、复习节奏、复试准备，全程陪伴式规划，让考研之路更有方向感与掌控感。</p>
+      </div>
+      <div class="f-side">
+        <h3>考研全程规划</h3>
+        <p>结合你的基础与目标，制定分阶段复习计划，并提供院校信息、导师资源与复试指导。</p>
+      </div>
+    </div>
+
+    <div class="feature reveal">
+      <div class="f-media">
+        <img src="./assets/feature-3.jpg" alt="">
+        <div class="f-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M19 5l-3 3M8 16l-3 3"/><circle cx="12" cy="12" r="3"/></svg>
+        </div>
+        <p>AI 学科测评快速定位知识薄弱点，结合学习数据生成个性化提分路径，让努力更有针对性。</p>
+      </div>
+      <div class="f-side">
+        <h3>AI 学科测评</h3>
+        <p>通过智能测评与数据分析，清晰呈现你的优势与短板，并给出可落地的提升建议。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BENEFITS ============ -->
+<section class="benefits" id="benefits">
+  <div class="wrap">
+    <div class="benefit-layout">
+      <div class="benefit-hero reveal">
+        <img src="./assets/benefit-bg.jpg" alt="">
+        <div class="bh-text">
+          <h2>让规划更清晰，<br>让未来更可控。</h2>
+          <p>从测评到咨询，从数据到决策，智途帮你把复杂的升学选择，拆解成一步步可执行的计划。</p>
+        </div>
+        <a href="#contact" class="btn btn-white">开始规划</a>
+      </div>
+
+      <div class="benefit-grid">
+        <div class="bcard">
+          <div class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+          <h3>快速上手</h3>
+          <p>注册后即可完成基础测评，几分钟内获得初步方向建议。</p>
+        </div>
+        <div class="bcard">
+          <div class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/></svg></div>
+          <h3>数据驱动</h3>
+          <p>历年分数线、专业就业与院校数据整合，辅助你做出更理性的判断。</p>
+        </div>
+        <div class="bcard">
+          <div class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <h3>专家一对一</h3>
+          <p>资深规划师在线沟通，针对你的情况提供个性化建议。</p>
+        </div>
+        <div class="bcard">
+          <div class="bicon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+          <h3>持续陪伴</h3>
+          <p>从备考到录取，关键节点提醒与阶段复盘，全程不掉队。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BLOG ============ -->
+<section class="blog" id="blog">
+  <div class="wrap">
+    <div class="blog-head reveal">
+      <div>
+        <h2>升学资讯与洞察</h2>
+        <p>政策解读、院校分析、备考经验——帮你在信息洪流中抓住重点。</p>
+      </div>
+      <a href="#" class="btn btn-primary">查看全部</a>
+    </div>
+
+    <div class="blog-grid">
+      <a href="#" class="post reveal">
+        <div class="post-img"><img src="./assets/post-1.jpg" alt=""></div>
+        <div class="post-body">
+          <div class="post-meta"><span>2026-03-12</span><span>·</span><span class="tag">高考志愿</span></div>
+          <h3>新高考模式下，如何科学选择选考科目？</h3>
+          <div class="post-foot">
+            <div class="avatar">王</div>
+            <div><strong>王老师</strong><small>资深志愿规划师</small></div>
+          </div>
+        </div>
+      </a>
+
+      <a href="#" class="post reveal">
+        <div class="post-img"><img src="./assets/post-2.jpg" alt=""></div>
+        <div class="post-body">
+          <div class="post-meta"><span>2026-02-28</span><span>·</span><span class="tag">考研规划</span></div>
+          <h3>考研择校：如何平衡院校层次与上岸概率？</h3>
+          <div class="post-foot">
+            <div class="avatar">陈</div>
+            <div><strong>陈老师</strong><small>考研全程规划师</small></div>
+          </div>
+        </div>
+      </a>
+
+      <a href="#" class="post reveal">
+        <div class="post-img"><img src="./assets/post-3.jpg" alt=""></div>
+        <div class="post-body">
+          <div class="post-meta"><span>2026-02-10</span><span>·</span><span class="tag">学习方法</span></div>
+          <h3>AI 测评如何帮你找到真正的薄弱环节？</h3>
+          <div class="post-foot">
+            <div class="avatar">李</div>
+            <div><strong>李智</strong><small>创始人 &amp; 首席规划师</small></div>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="cta" id="contact">
+  <div class="wrap">
+    <div class="cta-inner reveal">
+      <h2>准备好为你的未来，做一次更清晰的规划了吗？</h2>
+      <p>留下你的需求，我们的规划师会在 1 个工作日内与你联系。</p>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center">
+        <a href="#" class="btn btn-white">立即预约</a>
+        <a href="#" class="btn btn-ghost">了解服务详情</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <h3>智途 · 智能升学咨询</h3>
+        <div class="contact">
+          <a href="mailto:hello@example.com">hello@example.com</a>
+          <a href="tel:4000000000">400-000-0000</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>服务</h4>
+        <ul>
+          <li><a href="#">高考志愿规划</a></li>
+          <li><a href="#">考研全程规划</a></li>
+          <li><a href="#">AI 学科测评</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>公司</h4>
+        <ul>
+          <li><a href="#">关于我们</a></li>
+          <li><a href="#blog">资讯</a></li>
+          <li><a href="#contact">联系我们</a></li>
+          <li><a href="#">隐私政策</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 智途教育科技. 保留所有权利.</span>
+      <div class="socials">
+        <a href="#" aria-label="微信"><svg viewBox="0 0 24 24"><path d="M8.7 4C4.9 4 2 6.6 2 9.8c0 1.8 1 3.4 2.6 4.4l-.6 2 2.2-1.1c.7.2 1.5.3 2.3.3h.4c-.1-.4-.2-.9-.2-1.3 0-3 2.8-5.4 6.3-5.4h.4C15 6 12.1 4 8.7 4Z"/><path d="M22 14.1c0-2.7-2.5-4.8-5.6-4.8-3 0-5.6 2.1-5.6 4.8 0 2.6 2.6 4.8 5.6 4.8.6 0 1.2-.1 1.8-.3l1.8.9-.5-1.7c1.5-.9 2.5-2.2 2.5-3.7Z"/></svg></a>
+        <a href="#" aria-label="微博"><svg viewBox="0 0 24 24"><path d="M10 4c-4 0-7 2.7-7 6 0 3.4 3 6 7 6s7-2.6 7-6c0-3.3-3-6-7-6Zm0 10c-2.5 0-4.5-1.6-4.5-3.6S7.5 6.8 10 6.8s4.5 1.6 4.5 3.6S12.5 14 10 14Z"/><circle cx="18" cy="7" r="2"/><circle cx="21" cy="10" r="1.5"/></svg></a>
+        <a href="#" aria-label="B站"><svg viewBox="0 0 24 24"><path d="M7 3 4 6h16l-3-3"/><rect x="3" y="7" width="18" height="14" rx="3" fill="none" stroke="#fff" stroke-width="1.6"/><path d="M8 12v4M16 12v4" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- Header scroll state ---------- */
+  const header = document.getElementById('header');
+  const onScroll = () => {
+    header.classList.toggle('scrolled', window.scrollY > 40);
+  };
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  /* ---------- Desktop dropdown ---------- */
+  document.querySelectorAll('[data-dropdown]').forEach(item => {
+    const btn = item.querySelector('.nav-link');
+    const open = () => { item.classList.add('open'); btn.setAttribute('aria-expanded','true'); };
+    const close = () => { item.classList.remove('open'); btn.setAttribute('aria-expanded','false'); };
+    item.addEventListener('mouseenter', open);
+    item.addEventListener('mouseleave', close);
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      item.classList.contains('open') ? close() : open();
+    });
+    document.addEventListener('click', e => { if(!item.contains(e.target)) close(); });
+  });
+
+  /* ---------- Mobile menu ---------- */
+  const burger = document.getElementById('burger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  burger.addEventListener('click', () => {
+    const isOpen = mobileMenu.classList.toggle('open');
+    burger.classList.toggle('active', isOpen);
+    burger.setAttribute('aria-expanded', String(isOpen));
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  });
+  mobileMenu.querySelectorAll('.m-toggle').forEach(t => {
+    if (t.tagName === 'BUTTON') {
+      t.addEventListener('click', () => {
+        const group = t.parentElement;
+        const isOpen = group.classList.toggle('open');
+        t.setAttribute('aria-expanded', String(isOpen));
+      });
+    } else {
+      t.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+        burger.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+    }
+  });
+
+  /* ---------- AI typing effect ---------- */
+  const aiText = document.getElementById('aiText');
+  const caret = document.createElement('span');
+  caret.className = 'ai-caret';
+  const lines = [
+    "帮我看看，620 分能冲哪些 985？",
+    "考研择校，如何平衡院校和专业？",
+    "我的数学薄弱，该怎么规划复习？",
+    "帮我生成一份高三全年提分计划。"
+  ];
+  let li = 0, ci = 0, deleting = false;
+
+  function tick(){
+    const line = lines[li];
+    if (!deleting) {
+      ci++;
+      if (ci > line.length) {
+        deleting = true;
+        setTimeout(tick, 1600);
+        render(line);
+        return;
+      }
+    } else {
+      ci--;
+      if (ci < 0) {
+        deleting = false;
+        ci = 0;
+        li = (li + 1) % lines.length;
+        render('');
+        setTimeout(tick, 400);
+        return;
+      }
+    }
+    render(line.slice(0, ci));
+    setTimeout(tick, deleting ? 28 : 70);
+  }
+  function render(text){
+    aiText.textContent = text;
+    aiText.appendChild(caret);
+  }
+  render('');
+  setTimeout(tick, 900);
+
+  /* ---------- Scroll reveal ---------- */
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        en.target.classList.add('in');
+        io.unobserve(en.target);
+      }
+    });
+  }, {threshold: .15});
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  /* ---------- Quote word-by-word ---------- */
+  const quote = document.getElementById('quote');
+  if (quote) {
+    const text = quote.textContent.trim();
+    quote.textContent = '';
+    const frag = document.createDocumentFragment();
+    const nodes = [];
+    // 按字符切分，中文友好
+    for (const ch of text) {
+      const span = document.createElement('span');
+      span.className = 'w';
+      span.textContent = ch;
+      if (ch === ' ') span.style.width = '0.4em';
+      frag.appendChild(span);
+      nodes.push(span);
+    }
+    quote.appendChild(frag);
+    const qio = new IntersectionObserver(entries => {
+      entries.forEach(en => {
+        if (en.isIntersecting) {
+          nodes.forEach((n, i) => {
+            setTimeout(() => n.classList.add('in'), i * 18);
+          });
+          qio.unobserve(quote);
+        }
+      });
+    }, {threshold: .3});
+    qio.observe(quote);
+  }
+
+  /* ---------- Number count-up ---------- */
+  const counters = document.querySelectorAll('[data-count]');
+  const cio = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (!en.isIntersecting) return;
+      const el = en.target;
+      const target = +el.dataset.count;
+      const suffix = el.dataset.suffix || '';
+      const dur = 1400;
+      const start = performance.now();
+      function step(now){
+        const p = Math.min((now - start) / dur, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(target * eased) + suffix;
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+      cio.unobserve(el);
+    });
+  }, {threshold: .5});
+  counters.forEach(c => cio.observe(c));
+
+  /* ---------- Benefit card stagger ---------- */
+  const bgrid = document.querySelector('.benefit-grid');
+  if (bgrid) {
+    const bio = new IntersectionObserver(entries => {
+      entries.forEach(en => {
+        if (en.isIntersecting) {
+          bgrid.querySelectorAll('.bcard').forEach((card, i) => {
+            setTimeout(() => card.classList.add('in'), i * 120);
+          });
+          bio.unobserve(bgrid);
+        }
+      });
+    }, {threshold: .2});
+    bio.observe(bgrid);
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>智途 · 智能高考考研咨询</title>
+<meta name="description" content="智途，用 AI 与专家结合，为高考志愿与考研规划提供个性化咨询。">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site-header" id="header">
+  <div class="wrap header-inner">
+    <a href="index.html" class="logo">
+      <span class="logo-mark">智</span><span>智途</span>
+    </a>
+    <nav class="nav" aria-label="主导航">
+      <div class="nav-item"><a class="nav-link active" href="index.html">首页</a></div>
+      <div class="nav-item" data-dropdown>
+        <button class="nav-link" aria-haspopup="true" aria-expanded="false">咨询服务 <span class="caret"></span></button>
+        <div class="dropdown">
+          <a class="drop-link" href="tool.html"><strong>高考志愿规划</strong><span>基于分数与兴趣的智能院校匹配</span></a>
+          <a class="drop-link" href="tool.html"><strong>考研全程规划</strong><span>择校、复习、复试一站式咨询</span></a>
+          <a class="drop-link" href="tool.html"><strong>AI 学科测评</strong><span>快速定位强弱项，生成提分路径</span></a>
+        </div>
+      </div>
+      <div class="nav-item"><a class="nav-link" href="about.html">关于我们</a></div>
+      <div class="nav-item"><a class="nav-link" href="index.html#blog">资讯</a></div>
+      <div class="nav-item"><a class="nav-link" href="contact.html">联系</a></div>
+    </nav>
+    <div class="header-cta">
+      <a href="tool.html" class="btn btn-white btn-sm btn-login">免费测一测</a>
+      <button class="burger" id="burger" aria-label="打开菜单" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="m-group"><a class="m-toggle" href="index.html">首页</a></div>
+  <div class="m-group">
+    <button class="m-toggle" aria-expanded="false">咨询服务 <span class="caret"></span></button>
+    <div class="m-panel">
+      <a href="tool.html">高考志愿规划</a>
+      <a href="tool.html">考研全程规划</a>
+      <a href="tool.html">AI 学科测评</a>
+    </div>
+  </div>
+  <div class="m-group"><a class="m-toggle" href="about.html">关于我们</a></div>
+  <div class="m-group"><a class="m-toggle" href="index.html#blog">资讯</a></div>
+  <div class="m-group"><a class="m-toggle" href="contact.html">联系</a></div>
+  <div class="m-cta">
+    <a href="tool.html" class="btn btn-primary">免费测一测</a>
+    <a href="contact.html" class="btn btn-outline">预约咨询</a>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="hero-media">
+    <video src="assets/hero.mp4" poster="assets/hero-poster.jpg" autoplay muted loop playsinline></video>
+    <div class="fallback"></div>
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">AI × 专家，双重护航</div>
+    <h1>让每一次升学选择<br>都看得更远</h1>
+    <p class="hero-sub">高考志愿与考研规划，用智能测评、数据匹配与一对一专家咨询，为你规划更清晰的未来。</p>
+    <div class="ai-box">
+      <div class="ai-row">
+        <div class="ai-orb" aria-hidden="true"><span class="ai-ring"></span><span class="ai-ring"></span><span class="ai-dot"></span></div>
+        <div class="ai-text" id="aiText" role="status" aria-live="polite"><span class="ai-caret"></span></div>
+      </div>
+      <div class="ai-foot">
+        <div class="ai-dots" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="ai-icons" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6.5 11a5.5 5.5 0 0 0 11 0M12 16.5V21M9 21h6"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4H4v4M4 4l6 6M16 20h4v-4M20 20l-6-6"/></svg>
+        </div>
+      </div>
+    </div>
+    <a href="tool.html" class="btn btn-white" style="margin-top:8px">免费测一测</a>
+  </div>
+</section>
+
+<section class="intro" id="intro">
+  <div class="wrap">
+    <div class="intro-card reveal">
+      <div class="intro-quote" id="quote">“每一个升学选择，背后都是一个家庭的期待。智途希望用技术与专业，让这份期待少一点焦虑，多一点确定。”</div>
+      <div class="intro-meta">
+        <div class="author"><strong>李智</strong><span>智途创始人 &amp; 首席规划师</span></div>
+        <div class="stat-grid">
+          <div class="stat-card"><p>超过 65% 的考生在志愿填报时，对专业与院校的真实情况了解不足</p><div class="stat-num" data-count="65" data-suffix="%">0%</div></div>
+          <div class="stat-card"><p>近 40% 的大学生表示，如果重来一次会重新选择专业</p><div class="stat-num" data-count="40" data-suffix="%">0%</div></div>
+          <div class="stat-card"><p>90% 的考研上岸者认为，科学的择校与复习规划是关键</p><div class="stat-num" data-count="90" data-suffix="%">0%</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="features" id="features">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">我们的服务</div>
+      <h2>为每一个关键节点，<br>提供<em>主动、个性化</em>的升学支持。</h2>
+    </div>
+    <div class="feature reveal">
+      <div class="f-media">
+        <img src="assets/feature-1.jpg" alt="">
+        <div class="f-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 8l10 5 10-5-10-5Z"/><path d="M2 8v6l10 5 10-5V8"/></svg></div>
+        <p>基于分数、兴趣与性格测评，智能匹配院校与专业，生成可执行的志愿填报方案，让每一分都不被浪费。</p>
+      </div>
+      <div class="f-side"><h3>高考志愿规划</h3><p>从出分到填报，提供院校数据、专业解读与专家一对一沟通，帮你在复杂选择中找到最适合的方向。</p><a href="tool.html" class="btn btn-primary btn-sm" style="align-self:flex-start;margin-top:20px">立即试用</a></div>
+    </div>
+    <div class="feature reverse reveal">
+      <div class="f-media">
+        <img src="assets/feature-2.jpg" alt="">
+        <div class="f-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v14"/><path d="M8 7h8M8 11h8M8 15h5"/></svg></div>
+        <p>择校定位、复习节奏、复试准备，全程陪伴式规划，让考研之路更有方向感与掌控感。</p>
+      </div>
+      <div class="f-side"><h3>考研全程规划</h3><p>结合你的基础与目标，制定分阶段复习计划，并提供院校信息、导师资源与复试指导。</p><a href="contact.html" class="btn btn-primary btn-sm" style="align-self:flex-start;margin-top:20px">预约规划</a></div>
+    </div>
+    <div class="feature reveal">
+      <div class="f-media">
+        <img src="assets/feature-3.jpg" alt="">
+        <div class="f-icon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M19 5l-3 3M8 16l-3 3"/><circle cx="12" cy="12" r="3"/></svg></div>
+        <p>AI 学科测评快速定位知识薄弱点，结合学习数据生成个性化提分路径，让努力更有针对性。</p>
+      </div>
+      <div class="f-side"><h3>AI 学科测评</h3><p>通过智能测评与数据分析，清晰呈现你的优势与短板，并给出可落地的提升建议。</p><a href="tool.html" class="btn btn-primary btn-sm" style="align-self:flex-start;margin-top:20px">开始测评</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="benefits" id="benefits">
+  <div class="wrap">
+    <div class="benefit-layout">
+      <div class="benefit-hero reveal">
+        <img src="assets/benefit-bg.jpg" alt="">
+        <div class="bh-text"><h2>让规划更清晰，<br>让未来更可控。</h2><p>从测评到咨询，从数据到决策，智途帮你把复杂的升学选择，拆解成一步步可执行的计划。</p></div>
+        <a href="tool.html" class="btn btn-white">开始规划</a>
+      </div>
+      <div class="benefit-grid">
+        <div class="bcard"><div class="bicon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div><h3>快速上手</h3><p>注册后即可完成基础测评，几分钟内获得初步方向建议。</p></div>
+        <div class="bcard"><div class="bicon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/></svg></div><h3>数据驱动</h3><p>历年分数线、专业就业与院校数据整合，辅助你做出更理性的判断。</p></div>
+        <div class="bcard"><div class="bicon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><h3>专家一对一</h3><p>资深规划师在线沟通，针对你的情况提供个性化建议。</p></div>
+        <div class="bcard"><div class="bicon"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div><h3>持续陪伴</h3><p>从备考到录取，关键节点提醒与阶段复盘，全程不掉队。</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="blog" id="blog">
+  <div class="wrap">
+    <div class="blog-head reveal">
+      <div><h2>升学资讯与洞察</h2><p>政策解读、院校分析、备考经验——帮你在信息洪流中抓住重点。</p></div>
+      <a href="#" class="btn btn-primary btn-sm">查看全部</a>
+    </div>
+    <div class="blog-grid">
+      <a href="#" class="post reveal"><div class="post-img"><img src="assets/post-1.jpg" alt=""></div><div class="post-body"><div class="post-meta"><span>2026-03-12</span><span>·</span><span class="tag">高考志愿</span></div><h3>新高考模式下，如何科学选择选考科目？</h3><div class="post-foot"><div class="avatar">王</div><div><strong>王老师</strong><small>资深志愿规划师</small></div></div></div></a>
+      <a href="#" class="post reveal"><div class="post-img"><img src="assets/post-2.jpg" alt=""></div><div class="post-body"><div class="post-meta"><span>2026-02-28</span><span>·</span><span class="tag">考研规划</span></div><h3>考研择校：如何平衡院校层次与上岸概率？</h3><div class="post-foot"><div class="avatar">陈</div><div><strong>陈老师</strong><small>考研全程规划师</small></div></div></div></a>
+      <a href="#" class="post reveal"><div class="post-img"><img src="assets/post-3.jpg" alt=""></div><div class="post-body"><div class="post-meta"><span>2026-02-10</span><span>·</span><span class="tag">学习方法</span></div><h3>AI 测评如何帮你找到真正的薄弱环节？</h3><div class="post-foot"><div class="avatar">李</div><div><strong>李智</strong><small>创始人 &amp; 首席规划师</small></div></div></div></a>
+    </div>
+  </div>
+</section>
+
+<section class="cta" id="contact-cta">
+  <div class="wrap">
+    <div class="cta-inner reveal">
+      <h2>准备好为你的未来，做一次更清晰的规划了吗？</h2>
+      <p>先用 1 分钟测一测，或留下需求让规划师联系你。</p>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center">
+        <a href="tool.html" class="btn btn-white">免费测一测</a>
+        <a href="contact.html" class="btn btn-ghost">预约咨询</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <h3>智途 · 智能升学咨询</h3>
+        <p>用 AI 与专家结合，为高考与考研提供个性化升学规划。</p>
+        <div class="contact"><a href="mailto:hello@example.com">hello@example.com</a><a href="tel:4000000000">400-000-0000</a></div>
+      </div>
+      <div class="footer-col"><h4>服务</h4><ul><li><a href="tool.html">高考志愿规划</a></li><li><a href="tool.html">考研全程规划</a></li><li><a href="tool.html">AI 学科测评</a></li></ul></div>
+      <div class="footer-col"><h4>公司</h4><ul><li><a href="about.html">关于我们</a></li><li><a href="index.html#blog">资讯</a></li><li><a href="contact.html">联系我们</a></li></ul></div>
+      <div class="footer-col"><h4>支持</h4><ul><li><a href="contact.html">预约咨询</a></li><li><a href="#">隐私政策</a></li><li><a href="#">服务条款</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 智途教育科技. 保留所有权利.</span>
+      <div class="socials">
+        <a href="#" aria-label="微信"><svg viewBox="0 0 24 24"><path d="M8.7 4C4.9 4 2 6.6 2 9.8c0 1.8 1 3.4 2.6 4.4l-.6 2 2.2-1.1c.7.2 1.5.3 2.3.3h.4c-.1-.4-.2-.9-.2-1.3 0-3 2.8-5.4 6.3-5.4h.4C15 6 12.1 4 8.7 4Zm-2.4 3.2a.9.9 0 1 1 0 1.8.9.9 0 0 1 0-1.8Zm4.8 0a.9.9 0 1 1 0 1.8.9.9 0 0 1 0-1.8Z"/><path d="M22 14.1c0-2.7-2.5-4.8-5.6-4.8-3 0-5.6 2.1-5.6 4.8 0 2.6 2.6 4.8 5.6 4.8.6 0 1.2-.1 1.8-.3l1.8.9-.5-1.7c1.5-.9 2.5-2.2 2.5-3.7Zm-7.4-1.2a.7.7 0 1 1 0-1.4.7.7 0 0 1 0 1.4Zm3.6 0a.7.7 0 1 1 0-1.4.7.7 0 0 1 0 1.4Z"/></svg></a>
+        <a href="#" aria-label="微博"><svg viewBox="0 0 24 24"><path d="M10 4c-4 0-7 2.7-7 6 0 3.4 3 6 7 6s7-2.6 7-6c0-3.3-3-6-7-6Zm0 10c-2.5 0-4.5-1.6-4.5-3.6S7.5 6.8 10 6.8s4.5 1.6 4.5 3.6S12.5 14 10 14Z"/><circle cx="18" cy="7" r="2"/><circle cx="21" cy="10" r="1.5"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="data/schools.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

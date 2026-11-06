@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>我的对比 · 智途</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <header class="site-header scrolled" id="header">
+        <div class="wrap header-inner">
+            <a href="index.html" class="logo"><span class="logo-mark">智</span><span>智途</span></a>
+            <nav class="nav">
+                <div class="nav-item"><a class="nav-link" href="index.html">首页</a></div>
+                <div class="nav-item"><a class="nav-link" href="assess.html">开始测评</a></div>
+                <div class="nav-item"><a class="nav-link active" href="compare.html">我的对比</a></div>
+                <div class="nav-item"><a class="nav-link" href="contact.html">预约咨询</a></div>
+            </nav>
+            <div class="header-cta">
+                <a href="assess.html" class="btn btn-primary btn-sm btn-login">新测评</a>
+                <button class="burger" id="burger" aria-label="菜单"
+                    aria-expanded="false"><span></span><span></span><span></span></button>
+            </div>
+        </div>
+    </header>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="m-group"><a class="m-toggle" href="index.html">首页</a></div>
+        <div class="m-group"><a class="m-toggle" href="assess.html">开始测评</a></div>
+        <div class="m-group"><a class="m-toggle" href="compare.html">我的对比</a></div>
+        <div class="m-group"><a class="m-toggle" href="contact.html">预约咨询</a></div>
+    </div>
+
+    <section class="page-hero">
+        <div class="wrap">
+            <h1>我的历史对比</h1>
+            <p>这里会保留你最近保存的 3 次测评结果，方便对比不同分数下的选择。</p>
+        </div>
+    </section>
+
+    <section class="compare-wrap">
+        <div class="wrap">
+            <div id="compareRoot"></div>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="wrap">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <h3>智途 · 智能升学规划</h3>
+                    <p>用 AI 与专家结合，让升学选择更清晰。</p>
+                </div>
+                <div class="footer-col">
+                    <h4>产品</h4>
+                    <ul>
+                        <li><a href="assess.html">开始测评</a></li>
+                        <li><a href="compare.html">我的对比</a></li>
+                        <li><a href="contact.html">预约咨询</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>支持</h4>
+                    <ul>
+                        <li><a href="#">使用说明</a></li>
+                        <li><a href="#">隐私政策</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">© 2026 智途教育科技. 结果为示例数据，仅供参考。</div>
+        </div>
+    </footer>
+
+    <script src="data/schools.js"></script>
+    <script src="data/rank-map.js"></script>
+    <script src="app.js"></script>
+    <script>
+        (function () {
+            const root = document.getElementById('compareRoot');
+            const list = JSON.parse(localStorage.getItem('zhitu_saved') || '[]');
+            if (!list.length) {
+                root.innerHTML = `<div class="empty"><h3>还没有保存的结果</h3><p>完成一次测评后，在结果页点击「保存这次结果」，就会出现在这里。</p><a href="assess.html" class="btn btn-primary">去测评</a></div>`;
+                return;
+            }
+            function fmt(ts) {
+                const d = new Date(ts);
+                const p = n => String(n).padStart(2, '0');
+                return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
+            }
+            root.innerHTML = `<div class="compare-grid">${list.map((it, i) => `
+    <div class="compare-card">
+      <button class="remove" data-i="${i}" aria-label="删除">×</button>
+      <div class="date">${fmt(it.ts)}</div>
+      <div class="score">${it.score}</div>
+      <div class="sub">${it.province} · ${it.subject}科 · 位次 ${it.rank?.toLocaleString?.() || '-'}</div>
+      <div class="stats">
+        <div><span>冲刺</span><strong>${it.counts?.chong ?? 0} 所</strong></div>
+        <div><span>稳妥</span><strong>${it.counts?.wen ?? 0} 所</strong></div>
+        <div><span>保底</span><strong>${it.counts?.bao ?? 0} 所</strong></div>
+      </div>
+    </div>`).join('')}</div>
+    <div style="max-width:1000px;margin:28px auto 0;text-align:center">
+      <a href="assess.html" class="btn btn-primary">再测一次</a>
+    </div>`;
+
+            root.addEventListener('click', e => {
+                const b = e.target.closest('.remove');
+                if (!b) return;
+                const i = +b.dataset.i;
+                const arr = JSON.parse(localStorage.getItem('zhitu_saved') || '[]');
+                arr.splice(i, 1);
+                localStorage.setItem('zhitu_saved', JSON.stringify(arr));
+                location.reload();
+            });
+        })();
+    </script>
+</body>
+
+</html>

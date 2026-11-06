@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>预约咨询 · 智途</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <header class="site-header" id="header">
+        <div class="wrap header-inner">
+            <a href="index.html" class="logo"><span class="logo-mark">智</span><span>智途</span></a>
+            <nav class="nav">
+                <div class="nav-item"><a class="nav-link" href="index.html">首页</a></div>
+                <div class="nav-item"><a class="nav-link" href="assess.html">开始测评</a></div>
+                <div class="nav-item"><a class="nav-link" href="compare.html">我的对比</a></div>
+                <div class="nav-item"><a class="nav-link active" href="contact.html">预约咨询</a></div>
+            </nav>
+            <div class="header-cta">
+                <a href="assess.html" class="btn btn-white btn-sm btn-login">免费测评</a>
+                <button class="burger" id="burger" aria-label="菜单"
+                    aria-expanded="false"><span></span><span></span><span></span></button>
+            </div>
+        </div>
+    </header>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="m-group"><a class="m-toggle" href="index.html">首页</a></div>
+        <div class="m-group"><a class="m-toggle" href="assess.html">开始测评</a></div>
+        <div class="m-group"><a class="m-toggle" href="compare.html">我的对比</a></div>
+        <div class="m-group"><a class="m-toggle" href="contact.html">预约咨询</a></div>
+    </div>
+
+    <section class="page-hero">
+        <div class="wrap">
+            <h1>预约一次咨询，聊聊你的升学规划。</h1>
+            <p>填写下面的表单，我们的规划师会在 1 个工作日内与你联系。</p>
+        </div>
+    </section>
+
+    <section class="steps-wrap" style="padding-top:56px">
+        <div class="wrap">
+            <form class="form-card" id="contactForm" style="max-width:680px">
+                <h2>预约信息</h2>
+                <p class="sub" id="ctxHint" style="display:none"></p>
+                <div class="form-grid">
+                    <div class="field"><label for="name">姓名</label><input id="name" type="text" placeholder="你的称呼"
+                            required></div>
+                    <div class="field"><label for="phone">手机号</label><input id="phone" type="tel" placeholder="用于联系你"
+                            required></div>
+                    <div class="field"><label for="ctype">咨询类型</label>
+                        <select id="ctype">
+                            <option>高考志愿规划</option>
+                            <option>考研全程规划</option>
+                            <option>AI 学科测评</option>
+                            <option>其他</option>
+                        </select>
+                    </div>
+                    <div class="field"><label for="province2">所在省份</label><input id="province2" type="text"
+                            placeholder="例如 广东"></div>
+                    <div class="field full"><label for="msg">想了解的情况（选填）</label><textarea id="msg" rows="4"
+                            placeholder="例如：分数段、目标院校、目前困惑……"></textarea></div>
+                </div>
+                <div class="form-actions">
+                    <span></span>
+                    <div class="right"><button type="submit" class="btn btn-primary">提交预约</button></div>
+                </div>
+                <div class="form-success" id="formSuccess"
+                    style="display:none;background:#E4F6EA;color:#1F8A4C;padding:14px 18px;border-radius:12px;margin-top:16px;font-size:14px">
+                    ✓ 已收到你的预约信息（演示），我们会尽快联系你。</div>
+            </form>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="wrap">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <h3>智途 · 智能升学规划</h3>
+                    <p>用 AI 与专家结合，让升学选择更清晰。</p>
+                    <div class="contact"><a href="mailto:hello@example.com">hello@example.com</a><a
+                            href="tel:4000000000">400-000-0000</a></div>
+                </div>
+                <div class="footer-col">
+                    <h4>产品</h4>
+                    <ul>
+                        <li><a href="assess.html">开始测评</a></li>
+                        <li><a href="compare.html">我的对比</a></li>
+                        <li><a href="contact.html">预约咨询</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>支持</h4>
+                    <ul>
+                        <li><a href="#">使用说明</a></li>
+                        <li><a href="#">隐私政策</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">© 2026 智途教育科技. 结果为示例数据，仅供参考。</div>
+        </div>
+    </footer>
+
+    <script src="data/schools.js"></script>
+    <script src="data/rank-map.js"></script>
+    <script src="app.js"></script>
+    <script>
+        (function () {
+            // 从结果页带来的上下文
+            const params = new URLSearchParams(location.search);
+            const ctx = params.get('ctx');
+            if (ctx) {
+                const hint = document.getElementById('ctxHint');
+                hint.style.display = 'block';
+                hint.textContent = `来自你的测评结果：${ctx}`;
+            }
+
+            const form = document.getElementById('contactForm');
+            form.addEventListener('submit', e => {
+                e.preventDefault();
+                const ok = document.getElementById('formSuccess');
+                ok.style.display = 'block';
+                form.reset();
+            });
+        })();
+    </script>
+</body>
+
+</html>

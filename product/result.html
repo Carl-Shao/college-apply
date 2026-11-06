@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>我的测评结果 · 智途</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <header class="site-header scrolled" id="header">
+        <div class="wrap header-inner">
+            <a href="index.html" class="logo"><span class="logo-mark">智</span><span>智途</span></a>
+            <nav class="nav">
+                <div class="nav-item"><a class="nav-link" href="index.html">首页</a></div>
+                <div class="nav-item"><a class="nav-link" href="assess.html">重新测评</a></div>
+                <div class="nav-item"><a class="nav-link" href="compare.html">我的对比</a></div>
+                <div class="nav-item"><a class="nav-link" href="contact.html">预约咨询</a></div>
+            </nav>
+            <div class="header-cta">
+                <a href="compare.html" class="btn btn-outline btn-sm btn-login">我的对比</a>
+                <button class="burger" id="burger" aria-label="菜单"
+                    aria-expanded="false"><span></span><span></span><span></span></button>
+            </div>
+        </div>
+    </header>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="m-group"><a class="m-toggle" href="index.html">首页</a></div>
+        <div class="m-group"><a class="m-toggle" href="assess.html">重新测评</a></div>
+        <div class="m-group"><a class="m-toggle" href="compare.html">我的对比</a></div>
+        <div class="m-group"><a class="m-toggle" href="contact.html">预约咨询</a></div>
+    </div>
+
+    <section class="result-wrap">
+        <div class="wrap" id="resultRoot">
+            <div class="result-head">
+                <div>
+                    <h1>你的升学匹配结果</h1>
+                    <div class="meta" id="resultMeta"></div>
+                </div>
+                <a href="assess.html" class="btn btn-outline btn-sm">重新测评</a>
+            </div>
+
+            <div class="tabs" id="tabs"></div>
+            <div id="resultBody"></div>
+
+            <div class="result-actions">
+                <button class="btn btn-outline" id="saveBtn">保存这次结果</button>
+                <a href="compare.html" class="btn btn-outline">查看历史对比</a>
+                <button class="btn btn-primary" id="bookBtn">预约规划师深入沟通</button>
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="wrap">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <h3>智途 · 智能升学规划</h3>
+                    <p>用 AI 与专家结合，让升学选择更清晰。</p>
+                </div>
+                <div class="footer-col">
+                    <h4>产品</h4>
+                    <ul>
+                        <li><a href="assess.html">开始测评</a></li>
+                        <li><a href="compare.html">我的对比</a></li>
+                        <li><a href="contact.html">预约咨询</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>支持</h4>
+                    <ul>
+                        <li><a href="#">使用说明</a></li>
+                        <li><a href="#">隐私政策</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">© 2026 智途教育科技. 结果为示例数据，仅供参考，不构成填报建议。</div>
+        </div>
+    </footer>
+
+    <script src="data/schools.js"></script>
+    <script src="data/rank-map.js"></script>
+    <script src="app.js"></script>
+    <script src="result.js"></script>
+</body>
+
+</html>
