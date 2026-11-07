@@ -1,7 +1,7 @@
 :root {
-    --purple: #573EFF;
-    --purple-2: #7C63FF;
-    --purple-soft: #F4F1FF;
+    --brown: #c0a272;
+    --brown-2: #ecdeac;
+    --brown-soft: #F3E8E3;
     --ink: #0E0B1A;
     --ink-2: #222;
     --muted: #666;
@@ -73,34 +73,37 @@ button {
     opacity: .92
 }
 
-.btn-primary{
-  background:linear-gradient(135deg,#7C63FF 0%,#573EFF 55%,#4326E0 100%);
-  color:#fff;
-  box-shadow:
-    0 6px 18px rgba(87,62,255,.35),
-    0 2px 6px rgba(87,62,255,.25),
-    inset 0 1px 0 rgba(255,255,255,.18);
-  transition:transform .2s,opacity .2s,box-shadow .25s,background .3s;
+/* 主按钮：棕色系渐变 + 阴影 */
+.btn-primary {
+    background: linear-gradient(135deg, #b8945f 0%, #a07d52 55%, #6f5030 100%);
+    color: #fff;
+    box-shadow:
+        0 6px 18px rgba(160, 125, 82, .38),
+        0 2px 6px rgba(160, 125, 82, .28),
+        inset 0 1px 0 rgba(255, 255, 255, .22);
+    transition: transform .2s, opacity .2s, box-shadow .25s, background .3s;
 }
-.btn-primary:hover{
-  transform:translateY(-1px);
-  opacity:1;
-  background:linear-gradient(135deg,#8A74FF 0%,#6248FF 55%,#4A2EEA 100%);
-  box-shadow:
-    0 10px 26px rgba(87,62,255,.45),
-    0 4px 10px rgba(87,62,255,.3),
-    inset 0 1px 0 rgba(255,255,255,.22);
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    opacity: 1;
+    background: linear-gradient(135deg, #c9a570 0%, #b08a5c 55%, #7d5b38 100%);
+    box-shadow:
+        0 10px 26px rgba(160, 125, 82, .5),
+        0 4px 10px rgba(160, 125, 82, .32),
+        inset 0 1px 0 rgba(255, 255, 255, .28);
 }
-.btn-primary:active{
-  transform:translateY(0);
-  box-shadow:
-    0 4px 12px rgba(87,62,255,.3),
-    inset 0 2px 6px rgba(0,0,0,.12);
+
+.btn-primary:active {
+    transform: translateY(0);
+    box-shadow:
+        0 4px 12px rgba(160, 125, 82, .32),
+        inset 0 2px 6px rgba(0, 0, 0, .12);
 }
 
 .btn-white {
     background: #fff;
-    color: var(--purple)
+    color: var(--brown)
 }
 
 .btn-ghost {
@@ -116,8 +119,8 @@ button {
 }
 
 .btn-outline:hover {
-    border-color: var(--purple);
-    color: var(--purple)
+    border-color: var(--brown);
+    color: var(--brown)
 }
 
 .btn-sm {
@@ -133,7 +136,7 @@ button {
     font-size: 12px;
     letter-spacing: .12em;
     text-transform: uppercase;
-    color: var(--purple);
+    color: var(--brown);
     font-weight: 600
 }
 
@@ -176,7 +179,7 @@ button {
     width: 32px;
     height: 32px;
     border-radius: 9px;
-    background: linear-gradient(135deg, var(--purple), var(--purple-2));
+    background: linear-gradient(135deg, var(--brown), var(--brown-2));
     display: grid;
     place-items: center;
     color: #fff;
@@ -215,8 +218,8 @@ button {
 }
 
 .site-header.scrolled .nav-link:hover {
-    background: var(--purple-soft);
-    color: var(--purple)
+    background: var(--brown-soft);
+    color: var(--brown)
 }
 
 .nav-link.active {
@@ -225,7 +228,7 @@ button {
 }
 
 .site-header.scrolled .nav-link.active {
-    color: var(--purple)
+    color: var(--brown)
 }
 
 .caret {
@@ -281,7 +284,7 @@ button {
 }
 
 .drop-link:hover {
-    background: var(--purple-soft)
+    background: var(--brown-soft)
 }
 
 .header-cta {
@@ -300,7 +303,7 @@ button {
 }
 
 .site-header.scrolled .burger {
-    background: var(--purple-soft)
+    background: var(--brown-soft)
 }
 
 .burger span {
@@ -430,7 +433,7 @@ button {
 }
 
 .hero-media .fallback {
-    background: radial-gradient(120% 90% at 50% 0%, #2A1E6B 0%, #0E0B1A 70%), radial-gradient(80% 60% at 80% 80%, #573EFF33 0%, transparent 60%)
+    background: radial-gradient(120% 90% at 50% 0%, #2A1A12 0%, #0E0B1A 70%), radial-gradient(80% 60% at 80% 80%, #c0a27233 0%, transparent 60%)
 }
 
 .hero-overlay {
@@ -472,7 +475,7 @@ button {
 
 /* page hero (inner pages) */
 .page-hero {
-    background: linear-gradient(160deg, #1A1240, var(--ink));
+    background: linear-gradient(160deg, #2A1A12, var(--ink));
     color: #fff;
     padding: 140px 0 64px
 }
@@ -527,15 +530,15 @@ button {
 }
 
 .step.active .dot {
-    border-color: var(--purple);
-    background: var(--purple);
+    border-color: var(--brown);
+    background: var(--brown);
     color: #fff
 }
 
 .step.done .dot {
-    border-color: var(--purple);
-    background: var(--purple-soft);
-    color: var(--purple)
+    border-color: var(--brown);
+    background: var(--brown-soft);
+    color: var(--brown)
 }
 
 .step.active,
@@ -609,8 +612,8 @@ button {
 .field input:focus,
 .field select:focus,
 .field textarea:focus {
-    border-color: var(--purple);
-    box-shadow: 0 0 0 3px rgba(87, 62, 255, .12)
+    border-color: var(--brown);
+    box-shadow: 0 0 0 3px rgba(192, 162, 114, .18)
 }
 
 .field small {
@@ -650,9 +653,9 @@ button {
 }
 
 .choice input:checked+label {
-    border-color: var(--purple);
-    background: var(--purple-soft);
-    color: var(--purple)
+    border-color: var(--brown);
+    background: var(--brown-soft);
+    color: var(--brown)
 }
 
 .form-actions {
@@ -718,7 +721,7 @@ button {
 }
 
 .result-head .meta strong {
-    color: var(--purple)
+    color: var(--brown)
 }
 
 .tabs {
@@ -742,8 +745,8 @@ button {
 }
 
 .tab.active {
-    background: var(--purple);
-    border-color: var(--purple);
+    background: var(--brown);
+    border-color: var(--brown);
     color: #fff
 }
 
@@ -805,7 +808,7 @@ button {
 }
 
 .school-card:hover {
-    border-color: var(--purple);
+    border-color: var(--brown);
     transform: translateY(-2px)
 }
 
@@ -870,8 +873,8 @@ button {
 }
 
 .major-tag {
-    background: var(--purple-soft);
-    color: var(--purple);
+    background: var(--brown-soft);
+    color: var(--brown);
     font-size: 12px;
     padding: 4px 10px;
     border-radius: 6px
@@ -936,7 +939,7 @@ button {
 .compare-card .score {
     font-size: 32px;
     font-weight: 600;
-    color: var(--purple);
+    color: var(--brown);
     letter-spacing: -.02em;
     line-height: 1
 }
@@ -1055,7 +1058,7 @@ button {
 }
 
 .cta-inner {
-    background: var(--purple);
+    background: var(--brown);
     border-radius: 24px;
     padding: 64px 40px;
     text-align: center;
@@ -1186,42 +1189,65 @@ button {
     }
 }
 
-@keyframes btn-breathe{
-  0%,100%{box-shadow:0 6px 18px rgba(87,62,255,.35),0 2px 6px rgba(87,62,255,.25),inset 0 1px 0 rgba(255,255,255,.18)}
-  50%{box-shadow:0 8px 24px rgba(87,62,255,.5),0 3px 8px rgba(87,62,255,.3),inset 0 1px 0 rgba(255,255,255,.2)}
+@keyframes btn-breathe {
+    0%, 100% {
+        box-shadow: 0 6px 18px rgba(160, 125, 82, .38), 0 2px 6px rgba(160, 125, 82, .28), inset 0 1px 0 rgba(255, 255, 255, .22)
+    }
+    50% {
+        box-shadow: 0 8px 24px rgba(160, 125, 82, .52), 0 3px 8px rgba(160, 125, 82, .34), inset 0 1px 0 rgba(255, 255, 255, .26)
+    }
 }
-.btn-primary{animation:btn-breathe 3.5s ease-in-out infinite}
-.btn-primary:hover{animation:none}
+
+.btn-primary {
+    animation: btn-breathe 3.5s ease-in-out infinite
+}
+
+.btn-primary:hover {
+    animation: none
+}
 
 /* 登录 / 注册 文字链接（次要入口） */
-.login-text-link{
-  font-size:15px;
-  font-weight:500;
-  color:var(--purple-2);
-  padding:8px 4px;
-  transition:color .2s,opacity .2s;
-  white-space:nowrap;
+.login-text-link {
+    font-size: 15px;
+    font-weight: 500;
+    color: #fff;
+    padding: 8px 4px;
+    transition: color .2s, opacity .2s;
+    white-space: nowrap;
 }
-.login-text-link:hover{
-  color:#fff;
-  opacity:1;
+
+.login-text-link:hover {
+    color: var(--brown);
+    opacity: 1;
 }
-/* 页面滚动后 header 变白底，链接换成深紫，保证对比度 */
-.site-header.scrolled .login-text-link{
-  color:var(--purple);
+
+/* 页面滚动后 header 变白底，链接换成深棕，保证对比度 */
+.site-header.scrolled .login-text-link {
+    color: var(--ink);
 }
-.site-header.scrolled .login-text-link:hover{
-  color:var(--purple-2);
+
+.site-header.scrolled .login-text-link:hover {
+    color: var(--brown);
 }
 
 /* ============ 页面进入过渡 ============ */
-body{
-  animation: pageEnter .4s cubic-bezier(.23,1,.32,1) both;
+body {
+    animation: pageEnter .4s cubic-bezier(.23, 1, .32, 1) both;
 }
-@keyframes pageEnter{
-  from{opacity:0;transform:translateY(10px)}
-  to{opacity:1;transform:none}
+
+@keyframes pageEnter {
+    from {
+        opacity: 0;
+        transform: translateY(10px)
+    }
+    to {
+        opacity: 1;
+        transform: none
+    }
 }
-@media (prefers-reduced-motion: reduce){
-  body{animation:none}
+
+@media (prefers-reduced-motion: reduce) {
+    body {
+        animation: none
+    }
 }

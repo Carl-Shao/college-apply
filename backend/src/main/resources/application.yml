@@ -1,0 +1,54 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:3306/student_planner?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: ${DB_USER:root}
+    password: ${DB_PASSWORD:root}
+  jpa:
+    hibernate:
+      ddl-auto: update        # 生产环境建议改为 validate 并使用 sql/schema.sql 建表
+    open-in-view: false
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: 6379
+      password: ${REDIS_PASSWORD:}
+app:
+  cors-origins: http://localhost:5173,http://localhost:3000
+  jwt:
+    secret: ${JWT_SECRET:please-change-this-secret-to-32+-bytes-random-string}
+    expire-hours: 72
+  sms:
+    provider: ${SMS_PROVIDER:mock}     # mock | aliyun | tencent | http；mock 只打印日志
+    aliyun:                            # 模板变量必须是 ${code}
+      access-key-id: ${ALIYUN_AK_ID:}
+      access-key-secret: ${ALIYUN_AK_SECRET:}
+      sign-name: ${ALIYUN_SMS_SIGN:}
+      template-code: ${ALIYUN_SMS_TEMPLATE:}
+    tencent:                           # 模板参数：{1}=验证码 {2}=有效分钟数
+      secret-id: ${TENCENT_SECRET_ID:}
+      secret-key: ${TENCENT_SECRET_KEY:}
+      sdk-app-id: ${TENCENT_SMS_APP_ID:}
+      sign-name: ${TENCENT_SMS_SIGN:}
+      template-id: ${TENCENT_SMS_TEMPLATE:}
+      region: ap-guangzhou
+    http:                              # 自建/第三方网关（POST JSON + Bearer）
+      api-url: ${SMS_API_URL:https://sms.example.com/v1/send}
+      api-key: ${SMS_API_KEY:}
+      template-id: ${SMS_TEMPLATE_ID:}
+      sign-name: ${SMS_SIGN_NAME:}
+  profile-dir: ./data/profiles      # 个人画像文件目录：{dir}/{userId}/profile.json
+  knowledge-dir: ./data/knowledge   # 额外知识库目录（*.md，文件名=阶段），可选
+  ollama:
+    base-url: http://localhost:11434
+    model: qwen2.5:7b                 # 按你 ollama list 里的实际名称修改
+    timeout-seconds: 180
+    temperature: 0.6
+    num-ctx: 4096
+  knowledge:
+    embedding:
+      enabled: true                  # 需要先执行：ollama pull bge-m3；不可用时自动回退关键词检索
+      model: bge-m3
+      min-score: 0.4                 # 余弦相似度阈值，按实际效果调（日志 debug 级别会打印 top 分数）
+      cache-file: ./data/knowledge-cache/embeddings.json

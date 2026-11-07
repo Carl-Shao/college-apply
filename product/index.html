@@ -36,7 +36,7 @@
         }
 
         .ai-row.focused {
-            border-color: rgba(124, 99, 255, .55)
+            border-color: rgba(236, 222, 172, .9)
         }
 
         .ai-orb {
@@ -52,21 +52,25 @@
             position: absolute;
             inset: 5px;
             border-radius: 50%;
-            border: 1px solid rgba(124, 99, 255, .6);
-            animation: ai-ring 1.5s ease-out infinite
+            border: 1.5px solid rgba(246, 236, 196, .95);
+            animation: ai-ring 1.5s ease-out infinite;
+            box-shadow: 0 0 8px rgba(246, 236, 196, .55);
         }
 
         .ai-ring:nth-child(2) {
             animation-delay: .75s;
-            border-color: rgba(124, 99, 255, .42)
+            border-color: rgba(236, 222, 172, .7)
         }
 
         .ai-dot {
             width: 11px;
             height: 11px;
             border-radius: 50%;
-            background: var(--purple-2);
-            box-shadow: 0 0 10px rgba(124, 99, 255, .9), 0 0 20px rgba(124, 99, 255, .42);
+            background: #f6ecc4;
+            box-shadow:
+                0 0 12px rgba(246, 236, 196, 1),
+                0 0 26px rgba(236, 222, 172, .75),
+                0 0 44px rgba(192, 162, 114, .45);
             animation: ai-orb 1.5s ease-in-out infinite
         }
 
@@ -109,7 +113,8 @@
             line-height: 1.35;
             color: rgba(255, 255, 255, .96);
             letter-spacing: -.01em;
-            text-align: left
+            text-align: left;
+            cursor: text;
         }
 
         .ai-input {
@@ -124,7 +129,7 @@
             letter-spacing: -.01em;
             color: #fff;
             padding: 0;
-            caret-color: var(--purple-2);
+            caret-color: var(--brown-2);
         }
 
         .ai-input::placeholder {
@@ -159,7 +164,7 @@
             height: 34px;
             border-radius: 10px;
             flex: 0 0 34px;
-            background: var(--purple);
+            background: var(--brown);
             display: grid;
             place-items: center;
             opacity: 0;
@@ -175,7 +180,7 @@
         }
 
         .ai-send:hover {
-            background: var(--purple-2)
+            background: var(--brown-2)
         }
 
         .ai-send svg {
@@ -222,31 +227,6 @@
         .ai-icons svg {
             width: 22px;
             height: 22px
-        }
-
-        .ai-chips {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-top: 4px
-        }
-
-        .ai-chip {
-            padding: 8px 14px;
-            border-radius: 999px;
-            font-size: 13px;
-            background: rgba(255, 255, 255, .08);
-            color: rgba(255, 255, 255, .85);
-            border: 1px solid rgba(255, 255, 255, .14);
-            transition: all .2s;
-            cursor: pointer;
-        }
-
-        .ai-chip:hover {
-            background: rgba(255, 255, 255, .18);
-            color: #fff;
-            border-color: rgba(255, 255, 255, .3)
         }
 
         /* 自定义 logo：图片 + 名称，最左边 */
@@ -304,6 +284,62 @@
             padding: 0 30px !important;
             box-sizing: border-box !important;
         }
+
+        /* ===== 标题 + 对话框：垂直居中 + 渐入动画 ===== */
+        .hero {
+            min-height: 100svh;
+        }
+
+        .hero-content {
+            padding: 72px 24px 0;
+            min-height: 100svh;
+            justify-content: center;
+            gap: 28px;
+        }
+
+        .hero-eyebrow,
+        .hero h1,
+        .ai-box,
+        .hero-actions {
+            opacity: 0;
+            transform: translateY(24px);
+            animation: heroIn .9s cubic-bezier(.23, 1, .32, 1) forwards;
+        }
+
+        .hero-eyebrow {
+            animation-delay: .15s;
+        }
+
+        .hero h1 {
+            animation-delay: .35s;
+        }
+
+        .ai-box {
+            animation-delay: .6s;
+        }
+
+        .hero-actions {
+            animation-delay: .85s;
+        }
+
+        @keyframes heroIn {
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            .hero-eyebrow,
+            .hero h1,
+            .ai-box,
+            .hero-actions {
+                animation: none;
+                opacity: 1;
+                transform: none;
+            }
+        }
     </style>
 </head>
 
@@ -322,6 +358,7 @@
                 <div class="nav-item"><a class="nav-link" href="contact.html">预约咨询</a></div>
             </nav>
             <div class="header-cta">
+                <a href="login.html" class="login-text-link" id="loginBtn">登录 / 注册</a>
                 <button class="burger" id="burger" aria-label="菜单"
                     aria-expanded="false"><span></span><span></span><span></span></button>
             </div>
@@ -345,9 +382,8 @@
         <div class="hero-content">
             <div class="hero-eyebrow">AI × 专家，双重护航</div>
             <h1>1 分钟，测测你的升学方向</h1>
-            <p class="hero-sub">输入分数与科类，获得冲稳保院校参考与专业建议。可保存、可对比、可预约规划师深入沟通。</p>
 
-            <!-- AI 对话框 -->
+            <!-- AI 对话框：内部轮播相关搜索（打字特效） -->
             <div class="ai-box">
                 <div class="ai-row" id="aiRow">
                     <div class="ai-orb" aria-hidden="true">
@@ -383,15 +419,7 @@
                 </div>
             </div>
 
-            <!-- 快捷问题 -->
-            <div class="ai-chips" id="aiChips">
-                <button class="ai-chip" data-q="620 分能冲哪些 985？">620 分能冲哪些 985？</button>
-                <button class="ai-chip" data-q="考研择校怎么平衡院校和专业？">考研择校怎么平衡？</button>
-                <button class="ai-chip" data-q="数学薄弱该怎么规划复习？">数学薄弱怎么补？</button>
-                <button class="ai-chip" data-q="帮我生成一份高三提分计划">生成高三提分计划</button>
-            </div>
-
-            <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:8px">
+            <div class="hero-actions" style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:8px">
                 <a href="assess.html" class="btn btn-primary">开始免费测评</a>
                 <a href="compare.html" class="btn btn-ghost">查看我的对比</a>
             </div>
@@ -409,17 +437,17 @@
             const aiInput = document.getElementById('aiInput');
             const aiSend = document.getElementById('aiSend');
             const aiRow = document.getElementById('aiRow');
-            const aiChips = document.getElementById('aiChips');
             const aiDots = document.getElementById('aiDots');
 
             const caret = document.createElement('span');
             caret.className = 'ai-caret';
 
+            // 相关搜索词（在框内轮播）
             const lines = [
-                "帮我看看，620 分能冲哪些 985？",
-                "考研择校，如何平衡院校和专业？",
-                "我的数学薄弱，该怎么规划复习？",
-                "帮我生成一份高三全年提分计划。"
+                "620 分能冲哪些 985？",
+                "考研择校怎么平衡院校和专业？",
+                "数学薄弱该怎么规划复习？",
+                "帮我生成一份高三提分计划。"
             ];
 
             let li = 0, ci = 0, deleting = false;
@@ -457,6 +485,7 @@
             }
 
             function switchToInput() {
+                if (typingDone) return;
                 typingDone = true;
                 aiText.style.display = 'none';
                 aiInput.style.display = 'block';
@@ -473,8 +502,10 @@
 
             renderTyping('');
             setTimeout(tick, 900);
-            setTimeout(() => { if (!typingDone) switchToInput(); }, 7000);
+            // 轮播两轮后自动切到输入模式
+            setTimeout(() => { if (!typingDone) switchToInput(); }, 9000);
 
+            // 点击文字区域进入输入模式
             aiText.addEventListener('click', switchToInput);
             aiRow.addEventListener('click', e => {
                 if (e.target === aiInput || e.target === aiSend) return;
@@ -504,20 +535,6 @@
                 const url = 'assess.html?q=' + encodeURIComponent(q);
                 window.location.href = url;
             }
-
-            aiChips.addEventListener('click', e => {
-                const chip = e.target.closest('.ai-chip');
-                if (!chip) return;
-                const q = chip.dataset.q;
-                if (!typingDone) {
-                    switchToInput();
-                }
-                aiInput.value = q;
-                aiSend.classList.add('show');
-                updateDots(2);
-                aiInput.focus();
-                setTimeout(submitQuestion, 220);
-            });
         })();
     </script>
 </body>
